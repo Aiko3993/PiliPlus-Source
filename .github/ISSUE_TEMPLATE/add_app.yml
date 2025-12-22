@@ -1,105 +1,120 @@
-name: Add App Issue
+name: Add App Request
 description: Submit new apps (up to 3) for inclusion in the source
 title: '[App Request]: <App Name>'
 labels:
-- app-request
+  - app-request
 body:
-- type: markdown
-  attributes:
-    value: '### Instructions
+  - type: markdown
+    attributes:
+      value: |
+        ### Instructions
+        You can request up to **3 apps** in a single issue.
+        If you need to add more, please submit a Pull Request or open another issue.
 
-      You can request up to **3 apps** in a single issue.
+  - type: input
+    id: app_name
+    attributes:
+      label: App Name
+      description: The name of the application.
+      placeholder: e.g. YouTube Reborn
+    validations:
+      required: true
 
-      If you need to add more, please submit a Pull Request or open another issue.
+  - type: input
+    id: github_repo
+    attributes:
+      label: GitHub Repository
+      description: The Owner/Repo format.
+      placeholder: e.g. google/ios-app
+    validations:
+      required: true
 
-      '
-- type: input
-  id: app_name
-  attributes:
-    label: App Name
-    description: The name of the application.
-    placeholder: e.g. YouTube Reborn
-  validations:
-    required: true
-- type: input
-  id: github_repo
-  attributes:
-    label: GitHub Repository
-    description: The Owner/Repo format.
-    placeholder: e.g. google/ios-app
-  validations:
-    required: true
-- type: dropdown
-  id: category
-  attributes:
-    label: Category
-    options: &id001
-    - NSFW
-    - Standard
-  validations:
-    required: true
-- type: input
-  id: icon_url
-  attributes:
-    label: Icon URL (Optional)
-    placeholder: https://example.com/icon.png
-- type: markdown
-  attributes:
-    value: '---'
-- type: input
-  id: app_name_2
-  attributes:
-    label: App Name 2
-    description: (Optional) Second app name.
-  validations:
-    required: false
-- type: input
-  id: github_repo_2
-  attributes:
-    label: GitHub Repository 2
-    description: (Optional) Owner/Repo for second app.
-  validations:
-    required: false
-- type: dropdown
-  id: category_2
-  attributes:
-    label: Category 2
-    options: *id001
-  validations:
-    required: false
-- type: input
-  id: icon_url_2
-  attributes:
-    label: Icon URL 2 (Optional)
-  validations:
-    required: false
-- type: markdown
-  attributes:
-    value: '---'
-- type: input
-  id: app_name_3
-  attributes:
-    label: App Name 3
-    description: (Optional) Third app name.
-  validations:
-    required: false
-- type: input
-  id: github_repo_3
-  attributes:
-    label: GitHub Repository 3
-    description: (Optional) Owner/Repo for third app.
-  validations:
-    required: false
-- type: dropdown
-  id: category_3
-  attributes:
-    label: Category 3
-    options: *id001
-  validations:
-    required: false
-- type: input
-  id: icon_url_3
-  attributes:
-    label: Icon URL 3 (Optional)
-  validations:
-    required: false
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - NSFW
+        - Standard
+    validations:
+      required: true
+
+  - type: input
+    id: icon_url
+    attributes:
+      label: Icon URL (Optional)
+      placeholder: https://example.com/icon.png
+
+  - type: markdown
+    attributes:
+      value: "---"
+
+  - type: input
+    id: app_name_2
+    attributes:
+      label: App Name 2
+      description: (Optional) Second app name.
+    validations:
+      required: false
+
+  - type: input
+    id: github_repo_2
+    attributes:
+      label: GitHub Repository 2
+      description: (Optional) Owner/Repo for second app.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: category_2
+    attributes:
+      label: Category 2
+      options:
+        - NSFW
+        - Standard
+    validations:
+      required: false
+
+  - type: input
+    id: icon_url_2
+    attributes:
+      label: Icon URL 2 (Optional)
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: "---"
+
+  - type: input
+    id: app_name_3
+    attributes:
+      label: App Name 3
+      description: (Optional) Third app name.
+    validations:
+      required: false
+
+  - type: input
+    id: github_repo_3
+    attributes:
+      label: GitHub Repository 3
+      description: (Optional) Owner/Repo for third app.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: category_3
+    attributes:
+      label: Category 3
+      options:
+        - NSFW
+        - Standard
+    validations:
+      required: false
+
+  - type: input
+    id: icon_url_3
+    attributes:
+      label: Icon URL 3 (Optional)
+    validations:
+      required: false

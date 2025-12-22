@@ -3,6 +3,3 @@ contact_links:
   - name: Question or Discussion
     url: https://github.com/Aiko3993/iOS-Sideload-Source/discussions
     about: Please use GitHub Discussions for questions, ideas, or general chat.
-  - name: Bug Report
-    url: https://github.com/Aiko3993/iOS-Sideload-Source/issues/new?template=bug_report.md
-    about: If you find a bug in the source generation or website, please report it here.
