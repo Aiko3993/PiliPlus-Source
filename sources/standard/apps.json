@@ -28,5 +28,9 @@
     "name": "Apollo",
     "github_repo": "Balackburn/Apollo",
     "icon_url": "https://raw.githubusercontent.com/Balackburn/Apollo/refs/heads/main/apollo_icons/icon_91.webp"
+  },
+  {
+    "name": "LiveContainer",
+    "github_repo": "LiveContainer/LiveContainer"
   }
 ]

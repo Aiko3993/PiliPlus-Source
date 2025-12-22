@@ -151,6 +151,32 @@
           "sha256": "fd8789d96dc095f8a7194bd750097a48e3b0c803a60a41d3b55c03c4504225aa"
         }
       ]
+    },
+    {
+      "name": "LiveContainer",
+      "githubRepo": "LiveContainer/LiveContainer",
+      "bundleIdentifier": "com.kdt.livecontainer",
+      "developerName": "LiveContainer",
+      "version": "3.6.60",
+      "versionDate": "2025-12-21",
+      "versionDescription": "**Commit:** [14c370b986c277e2a871a67712c6015ea32614f1](https://github.com/LiveContainer/LiveContainer/commit/14c370b986c277e2a871a67712c6015ea32614f1)\n**Message:** Fix #1047\n\nThis is a nightly release [created automatically with GitHub Actions workflow](https://github.com/LiveContainer/LiveContainer/actions/runs/20401832822/attempts/1).",
+      "downloadURL": "https://github.com/LiveContainer/LiveContainer/releases/download/nightly/LiveContainer%2BSideStore.ipa",
+      "localizedDescription": "Run iOS apps without actually installing them!",
+      "iconURL": "https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon1024.png",
+      "tintColor": "#0050FF",
+      "size": 36469536,
+      "permissions": {},
+      "screenshotURLs": [],
+      "versions": [
+        {
+          "version": "3.6.60",
+          "date": "2025-12-21",
+          "localizedDescription": "**Commit:** [14c370b986c277e2a871a67712c6015ea32614f1](https://github.com/LiveContainer/LiveContainer/commit/14c370b986c277e2a871a67712c6015ea32614f1)\n**Message:** Fix #1047\n\nThis is a nightly release [created automatically with GitHub Actions workflow](https://github.com/LiveContainer/LiveContainer/actions/runs/20401832822/attempts/1).",
+          "downloadURL": "https://github.com/LiveContainer/LiveContainer/releases/download/nightly/LiveContainer%2BSideStore.ipa",
+          "size": 36469536,
+          "sha256": "0c70cca7912f50b975e22c2481f74f292adf81f7ccc33b2ab64c11ac067b2cc7"
+        }
+      ]
     }
   ],
   "news": []
