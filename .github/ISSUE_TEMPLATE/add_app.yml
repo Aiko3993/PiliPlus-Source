@@ -1,5 +1,5 @@
 name: Add App Request
-description: Submit new apps (up to 3) for inclusion in the source
+description: Submit a new app for inclusion in the source
 title: '[App Request]: <App Name>'
 labels:
 - app-request
@@ -8,10 +8,9 @@ body:
   attributes:
     value: '### Instructions
 
-      You can request up to **3 apps** in a single issue.
+      Please submit **one app per issue**.
 
-      If you need to add more, please submit a Pull Request or open another issue.
-
+      If you need to add more, please open another issue.
       '
 - type: input
   id: app_name
@@ -33,7 +32,7 @@ body:
   id: category
   attributes:
     label: Category
-    options: &id001
+    options:
     - Standard
     - NSFW
   validations:
@@ -43,63 +42,3 @@ body:
   attributes:
     label: Icon URL (Optional)
     placeholder: https://example.com/icon.png
-- type: markdown
-  attributes:
-    value: '---'
-- type: input
-  id: app_name_2
-  attributes:
-    label: App Name 2
-    description: (Optional) Second app name.
-  validations:
-    required: false
-- type: input
-  id: github_repo_2
-  attributes:
-    label: GitHub Repository 2
-    description: (Optional) Owner/Repo for second app.
-  validations:
-    required: false
-- type: dropdown
-  id: category_2
-  attributes:
-    label: Category 2
-    options: *id001
-  validations:
-    required: false
-- type: input
-  id: icon_url_2
-  attributes:
-    label: Icon URL 2 (Optional)
-  validations:
-    required: false
-- type: markdown
-  attributes:
-    value: '---'
-- type: input
-  id: app_name_3
-  attributes:
-    label: App Name 3
-    description: (Optional) Third app name.
-  validations:
-    required: false
-- type: input
-  id: github_repo_3
-  attributes:
-    label: GitHub Repository 3
-    description: (Optional) Owner/Repo for third app.
-  validations:
-    required: false
-- type: dropdown
-  id: category_3
-  attributes:
-    label: Category 3
-    options: *id001
-  validations:
-    required: false
-- type: input
-  id: icon_url_3
-  attributes:
-    label: Icon URL 3 (Optional)
-  validations:
-    required: false
