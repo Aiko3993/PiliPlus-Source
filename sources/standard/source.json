@@ -290,6 +290,14 @@
           "sha256": "8a2d5cb28d4b7e910d6fbe53eb48c38c0dad0e0eb91c75b18a7d26b2794b6afb"
         },
         {
+          "version": "3.6.60",
+          "date": "2025-12-21",
+          "localizedDescription": "**Commit:** [14c370b986c277e2a871a67712c6015ea32614f1](https://github.com/LiveContainer/LiveContainer/commit/14c370b986c277e2a871a67712c6015ea32614f1)\n**Message:** Fix #1047\n\nThis is a nightly release [created automatically with GitHub Actions workflow](https://github.com/LiveContainer/LiveContainer/actions/runs/20401832822/attempts/1).",
+          "downloadURL": "https://github.com/LiveContainer/LiveContainer/releases/download/nightly/LiveContainer.ipa",
+          "size": 4387422,
+          "sha256": "8a2d5cb28d4b7e910d6fbe53eb48c38c0dad0e0eb91c75b18a7d26b2794b6afb"
+        },
+        {
           "version": "3.6.60-nightly.3.6.60",
           "date": "2025-12-21",
           "localizedDescription": "**Commit:** [14c370b986c277e2a871a67712c6015ea32614f1](https://github.com/LiveContainer/LiveContainer/commit/14c370b986c277e2a871a67712c6015ea32614f1)\n**Message:** Fix #1047\n\nThis is a nightly release [created automatically with GitHub Actions workflow](https://github.com/LiveContainer/LiveContainer/actions/runs/20401832822/attempts/1).",
@@ -349,6 +357,14 @@
       "size": 36469536,
       "screenshotURLs": [],
       "versions": [
+        {
+          "version": "3.6.60",
+          "date": "2025-12-21",
+          "localizedDescription": "**Commit:** [14c370b986c277e2a871a67712c6015ea32614f1](https://github.com/LiveContainer/LiveContainer/commit/14c370b986c277e2a871a67712c6015ea32614f1)\n**Message:** Fix #1047\n\nThis is a nightly release [created automatically with GitHub Actions workflow](https://github.com/LiveContainer/LiveContainer/actions/runs/20401832822/attempts/1).",
+          "downloadURL": "https://github.com/LiveContainer/LiveContainer/releases/download/nightly/LiveContainer%2BSideStore.ipa",
+          "size": 36469536,
+          "sha256": "0c70cca7912f50b975e22c2481f74f292adf81f7ccc33b2ab64c11ac067b2cc7"
+        },
         {
           "version": "3.6.60",
           "date": "2025-12-21",
@@ -564,6 +580,14 @@
           "sha256": "df2b2874e835094b55d5a1dfe73099957a30f6f833c306ad2633cce9737fc8eb"
         },
         {
+          "version": "1.0.cd000a3",
+          "date": "2025-11-02",
+          "localizedDescription": "Nightly build from commit cd000a30403595f1856c07bee32e135803963d50",
+          "downloadURL": "https://github.com/Aiko3993/iOS-Sideload-Source/releases/download/app-artifacts/AngelAuraMC_Amethyst-iOS_org.angelauramc.amethyst-ios.ipa_cd000a3.ipa",
+          "size": 148571576,
+          "sha256": "df2b2874e835094b55d5a1dfe73099957a30f6f833c306ad2633cce9737fc8eb"
+        },
+        {
           "version": "1.0-nightly.1.0.cd000a3",
           "date": "2025-11-02",
           "localizedDescription": "Nightly build from commit cd000a30403595f1856c07bee32e135803963d50",
@@ -619,17 +643,24 @@
       "githubRepo": "kodjodevf/mangayomi",
       "bundleIdentifier": "com.kodjodevf.mangayomi",
       "developerName": "kodjodevf",
-      "version": "0.6.85",
-      "versionDate": "2025-12-10",
-      "versionDescription": "## What's Changed\r\n* Integrate MExtensionServer for Android\r\n* Android no longer needs the APKBridge server.\r\n* fix: updated statistics to use async fetch from db by @Whiskas101 in https://github.com/kodjodevf/mangayomi/pull/618\r\n* Add new feature: Always On Top on the anime player view. by @hndrbrm in https://github.com/kodjodevf/mangayomi/pull/614\r\n* AppImage Fix by @NBA2K1 in https://github.com/kodjodevf/mangayomi/pull/624\r\n* Add default user agent setting\r\n* Refactor reader page view and logic\r\n\r\n\r\n**Full Changelog**: https://github.com/kodjodevf/mangayomi/compare/v0.6.80...v0.6.85",
-      "downloadURL": "https://github.com/kodjodevf/mangayomi/releases/download/v0.6.85/Mangayomi-v0.6.85-ios.ipa",
+      "version": "0.6.90",
+      "versionDate": "2025-12-23",
+      "versionDescription": "Update",
+      "downloadURL": "https://github.com/kodjodevf/mangayomi/releases/download/v0.6.90/Mangayomi-v0.6.90-ios.ipa",
       "localizedDescription": "Free and open source application for reading manga, novels, and watching animes available on Android, iOS, macOS, Linux and Windows",
       "iconURL": "https://raw.githubusercontent.com/kodjodevf/mangayomi/main/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png",
       "tintColor": "#BE1622",
-      "size": 44541949,
-      "permissions": {},
+      "size": 45074150,
       "screenshotURLs": [],
       "versions": [
+        {
+          "version": "0.6.90",
+          "date": "2025-12-23",
+          "localizedDescription": "Update",
+          "downloadURL": "https://github.com/kodjodevf/mangayomi/releases/download/v0.6.90/Mangayomi-v0.6.90-ios.ipa",
+          "size": 45074150,
+          "sha256": "3d0c1f7adb50f6be87ad48984f1f2b719f492a30691ce2a8984c4a6c933bee70"
+        },
         {
           "version": "0.6.85",
           "date": "2025-12-10",
@@ -638,7 +669,8 @@
           "size": 44541949,
           "sha256": "e3e2b53de95c42686b9953d389b32b84a8498fd3d841693a593ee265a083f3c0"
         }
-      ]
+      ],
+      "sha256": "3d0c1f7adb50f6be87ad48984f1f2b719f492a30691ce2a8984c4a6c933bee70"
     },
     {
       "name": "Feather",
@@ -759,6 +791,14 @@
       "size": 7085608,
       "screenshotURLs": [],
       "versions": [
+        {
+          "version": "0.71-84-g5171569d.2025-12-23",
+          "date": "2025-12-23",
+          "localizedDescription": "Nightly build from commit 5171569d0018e02f731d63ac37d8c34da41ff0a7",
+          "downloadURL": "https://github.com/Aiko3993/iOS-Sideload-Source/releases/download/app-artifacts/jpd002_Play-_Play_iOS_5171569.ipa",
+          "size": 7085608,
+          "sha256": "a30d8c9588a3673d7662218a96d4268f5d019dd6ce3f3c9140cf49f1eb5170c2"
+        },
         {
           "version": "0.71-84-g5171569d.2025-12-23",
           "date": "2025-12-23",
