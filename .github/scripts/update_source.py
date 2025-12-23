@@ -189,6 +189,32 @@ def is_square_image(image_url, client, tolerance=0.05):
         logger.warning(f"Could not check aspect ratio for {image_url}: {e}")
         return True # Assume OK if check fails
 
+def apply_bundle_id_suffix(bundle_id, app_name, repo_name):
+    """Apply unique suffixes to bundle identifier based on app name/flavor."""
+    if not bundle_id: return bundle_id
+    
+    name_lower = app_name.lower()
+    suffixes = ['nightly', 'beta', 'alpha', 'dev', 'test', 'experimental', 'pre-release', 'jit', 'sidestore']
+    
+    found_suffix = False
+    for s in suffixes:
+        if s in name_lower:
+            if not bundle_id.endswith(f".{s}"):
+                bundle_id = f"{bundle_id}.{s}"
+            found_suffix = True
+            break
+    
+    if not found_suffix:
+        repo_name_clean = repo_name.split('/')[-1].lower()
+        if normalize_name(app_name) != normalize_name(repo_name_clean):
+            # Use the extra parts of the name as suffix
+            extra = name_lower.replace(repo_name_clean, '').strip()
+            extra_clean = re.sub(r'[^a-z0-9]', '', extra)
+            if extra_clean and len(extra_clean) > 2:
+                if not bundle_id.endswith(f".{extra_clean}"):
+                    bundle_id = f"{bundle_id}.{extra_clean}"
+    return bundle_id
+
 def process_app(app_config, existing_source, client, apps_list_to_update=None):
     repo = app_config['github_repo']
     name = app_config['name']
@@ -211,7 +237,15 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
         app_entry['githubRepo'] = repo 
         app_entry['name'] = name 
         
-        # Icon Selection: Compare user-provided vs. auto-discovered
+        # 1. Update Bundle ID immediately for coexistence (even if version is up to date)
+        if 'bundleIdentifier' in app_entry:
+            old_id = app_entry['bundleIdentifier']
+            new_id = apply_bundle_id_suffix(old_id, name, repo)
+            if old_id != new_id:
+                logger.info(f"Updated Bundle ID for {name}: {old_id} -> {new_id}")
+                app_entry['bundleIdentifier'] = new_id
+        
+        # 2. Icon Selection: Compare user-provided vs. auto-discovered
         config_icon = app_config.get('icon_url')
         current_icon = app_entry.get('iconURL')
         
@@ -306,28 +340,7 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
         sha256 = get_ipa_sha256(temp_path)
         
         # Ensure pre-release versions have unique bundle identifiers to coexist
-        # We also check for "flavor" keywords in the app name
-        name_lower = name.lower()
-        suffixes = ['nightly', 'beta', 'alpha', 'dev', 'test', 'experimental', 'pre-release', 'jit', 'sidestore']
-        
-        found_suffix = False
-        for s in suffixes:
-            if s in name_lower:
-                if not bundle_id.endswith(f".{s}"):
-                    bundle_id = f"{bundle_id}.{s}"
-                found_suffix = True
-                break
-        
-        # If no standard suffix but name is different from repo, use a hash or normalized suffix
-        if not found_suffix:
-            repo_name = repo.split('/')[-1].lower()
-            if normalize_name(name) != normalize_name(repo_name):
-                # Use the extra parts of the name as suffix
-                extra = name_lower.replace(repo_name, '').strip()
-                extra_clean = re.sub(r'[^a-z0-9]', '', extra)
-                if extra_clean and len(extra_clean) > 2:
-                    if not bundle_id.endswith(f".{extra_clean}"):
-                        bundle_id = f"{bundle_id}.{extra_clean}"
+        bundle_id = apply_bundle_id_suffix(bundle_id, name, repo)
 
     except Exception as e:
         logger.error(f"Download or processing failed for {name}: {e}")
