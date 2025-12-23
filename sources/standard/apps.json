@@ -70,7 +70,8 @@
     "name": "Amethyst (Nightly)",
     "github_repo": "AngelAuraMC/Amethyst-iOS",
     "github_workflow": "development.yml",
-    "artifact_name": "org.angelauramc.amethyst-ios.ipa"
+    "artifact_name": "org.angelauramc.amethyst-ios.ipa",
+    "bundle_id": "org.angelauramc.amethyst"
   },
   {
     "name": "Mangayomi",
@@ -106,6 +107,8 @@
     "name": "Play! (Nightly)",
     "github_repo": "jpd002/Play-",
     "github_workflow": "build-ios.yaml",
-    "artifact_name": "Play_iOS"
+    "artifact_name": "Play_iOS",
+    "icon_url": "https://raw.githubusercontent.com/jpd002/Play-/master/tools/PsfPlayer/Source/ui_ios/Images.xcassets/LaunchImage.launchimage/Launch-55inch.png",
+    "bundle_id": "com.virtualapplications.play"
   }
 ]
