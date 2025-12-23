@@ -318,12 +318,19 @@ def score_icon_path(path):
         'tinted': 70,
         '1024': 60,
         'production': 50,
-        'icon': 30,
+        'icon': 50,  # Increased from 30
         'logo': 20,
         'rounded': 10
     }
     
     filename = os.path.basename(p)
+    name_only = os.path.splitext(filename)[0].lower()
+    
+    # Exact name bonuses
+    if name_only == 'icon': score += 100
+    if name_only == 'appicon': score += 150
+    if name_only == 'marketing': score += 100
+    
     for kw, bonus in icon_keywords.items():
         if kw in filename:
             score += bonus
@@ -336,11 +343,14 @@ def score_icon_path(path):
     
     # Square/Resolution preference
     if 'square' in filename: score += 20
-    if '1024' in filename: score += 50
+    if '1024' in filename: score += 60
     elif '512' in filename: score += 40
-    elif '256' in filename: score += 30
-    elif '120' in filename: score += 10
-    elif 'marketing' in filename: score += 45
+    
+    # Handle @2x, @3x as resolution boosts
+    if '@3x' in filename: score += 15
+    elif '@2x' in filename: score += 10
+    
+    if 'marketing' in filename: score += 45
     
     # Penalties for things that are likely NOT the main app icon or are pre-masked
     if 'android' in p: score -= 60
@@ -362,7 +372,7 @@ def score_icon_path(path):
     
     return score
 
-def find_best_icon(repo, client, limit=5):
+def find_best_icon(repo, client, limit=20):
     """
     Auto-detect the best app icon candidates from the GitHub repository.
     Returns a list of raw URLs sorted by score.

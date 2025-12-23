@@ -358,10 +358,23 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
         # Use .zip for nightly.link as GitHub Artifacts are always zipped
         download_url = f"https://nightly.link/{repo}/workflows/{wf_name_clean}/{branch}/{artifact['name']}.zip"
         
-        # Add status=completed to support non-success runs if needed, 
-        # though our script usually filters for successful runs.
-        # download_url += "?status=completed" 
-        
+        # Pre-calculate what our direct download URL would be if we upload it
+        current_repo = client.get_current_repo()
+        if current_repo:
+            # Use a unique name for the asset to avoid collisions and allow skipping redundant downloads
+            # Format: Owner_Repo_ArtifactName_SHA.ipa
+            asset_name = f"{repo.replace('/', '_')}_{artifact['name']}_{version}"
+            if asset_name.lower().endswith('.ipa'):
+                asset_name = asset_name[:-4]
+            asset_name += ".ipa"
+            
+            # This is a bit of a guess on the URL structure but it's standard for GitHub Releases
+            # https://github.com/owner/repo/releases/download/app-artifacts/asset_name.ipa
+            direct_url = f"https://github.com/{current_repo}/releases/download/app-artifacts/{asset_name}"
+        else:
+            asset_name = None
+            direct_url = None
+            
         size = artifact['size_in_bytes']
     else:
         release = client.get_latest_release(
@@ -380,6 +393,8 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
             return existing_source
 
         download_url = ipa_asset['browser_download_url']
+        direct_url = download_url # For releases, the direct URL is the download URL
+        asset_name = None
         version = release['tag_name'].lstrip('v')
         release_date = release['published_at'].split('T')[0]
         version_desc = release['body'] or "Update"
@@ -393,10 +408,21 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
         app_entry['githubRepo'] = repo 
         app_entry['name'] = name 
         
-        # Check if we can skip early based on download URL
-        is_nightly_link = any('nightly.link' in v.get('downloadURL', '') for v in app_entry.get('versions', []))
+        # Check if we can skip early
+        # We skip if:
+        # 1. The version (SHA or Tag) is already the latest one in our source
+        # 2. AND we have a valid download URL (not a nightly.link if we prefer direct)
         
-        if any(v.get('downloadURL') == download_url for v in app_entry.get('versions', [])) and not is_nightly_link:
+        latest_version = app_entry.get('versions', [{}])[0]
+        is_up_to_date = latest_version.get('version') == version
+        has_direct_link = direct_url and latest_version.get('downloadURL') == direct_url
+        
+        is_generic = version.lower() in ['nightly', 'latest', 'stable', 'dev', 'beta']
+        
+        # If we are up to date and have the link we want, we can skip
+        # BUT: don't skip if the version is generic (like "nightly"), because we want to 
+        # extract the real version from the IPA.
+        if is_up_to_date and (has_direct_link or not direct_url) and not is_generic:
              # Even if up to date, we might want to update some metadata from config
              config_icon = app_config.get('icon_url')
              if config_icon and config_icon not in ['None', '_No response_'] and app_entry.get('iconURL') != config_icon:
@@ -408,8 +434,7 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
                  app_entry['tintColor'] = config_tint
                  logger.info(f"Updated tint color for {name} from config")
              
-             # If it's already up to date, we skip the heavy lifting (icon scraping & IPA download)
-             logger.info(f"Skipping {name} (Already up to date)")
+             logger.info(f"Skipping {name} (Already up to date at version {version})")
              return existing_source
 
         # If not skipped, proceed with metadata updates
@@ -524,13 +549,7 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
                                                                   body="This release contains direct download links for apps that are only available as GitHub Artifacts.")
                                 
                                 if release:
-                                    # Use a unique name for the asset to avoid collisions
-                                    # Format: Owner_Repo_ArtifactName.ipa
-                                    asset_name = f"{repo.replace('/', '_')}_{artifact['name']}"
-                                    if asset_name.lower().endswith('.ipa'):
-                                        asset_name = asset_name[:-4]
-                                    asset_name += ".ipa"
-                                        
+                                    # asset_name is already calculated at line 365
                                     asset = client.upload_release_asset(current_repo, release['id'], target_ipa, name=asset_name)
                                     if asset:
                                         download_url = asset['browser_download_url']
@@ -598,12 +617,26 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
         ipa_version, ipa_build, bundle_id = get_ipa_metadata(temp_path, default_bundle_id)
         found_bundle_id_auto = bundle_id
         
-        if workflow_file and ipa_version:
-            version = f"{ipa_version}-nightly.{ipa_build}"
-            
+        # Improve version string for Nightly/Workflow builds
+        if ipa_version:
+            is_generic = version.lower() in ['nightly', 'latest', 'stable', 'dev', 'beta']
+            if workflow_file or is_generic:
+                # If it's a workflow, we already have a SHA version from before, but IPA metadata is better
+                # if it contains the real version.
+                # USER: "App 名称已经说明是 Nightly 了", so we remove "-nightly" suffix
+                if ipa_version == ipa_build:
+                    version = ipa_version
+                else:
+                    version = f"{ipa_version}.{ipa_build}"
+                
+                # If we have a SHA (from workflow), append it for uniqueness if not already there
+                sha_short = workflow_run['head_sha'][:7] if workflow_run else None
+                if sha_short and sha_short not in version:
+                    version = f"{version}.{sha_short}"
+        
         if not version and not ipa_version:
             logger.warning(f"Failed to parse IPA metadata for {name}, using fallback.")
-            version = "0.0.0-nightly"
+            version = "0.0.0"
             bundle_id = default_bundle_id
 
         sha256 = get_ipa_sha256(temp_path)
@@ -650,19 +683,25 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
         if not icon_url or icon_url in ['None', '_No response_']:
             icon_candidates = find_best_icon(repo, client)
             if icon_candidates:
-                # Try to find the first square icon among top candidates
+                # Analyze candidates and pick the one with the highest quality score
+                best_cand = None
+                max_q = -1
+                
                 for cand in icon_candidates:
                     q_score, is_sq, has_trans = get_image_quality(cand, client)
-                    if is_sq:
-                        icon_url = cand
-                        found_icon_auto = cand
-                        logger.info(f"Selected square icon for {name}: {icon_url}")
-                        break
+                    if q_score > max_q:
+                        max_q = q_score
+                        best_cand = cand
+                
+                if best_cand:
+                    icon_url = best_cand
+                    found_icon_auto = best_cand
+                    logger.info(f"Selected best quality icon for {name} (Score: {max_q}): {icon_url}")
                 else:
-                    # Fallback to the best scored one if no square found
+                    # Ultimate fallback
                     icon_url = icon_candidates[0]
                     found_icon_auto = icon_candidates[0]
-                    logger.warning(f"No square icon found for {name}, using best candidate: {icon_url}")
+                    logger.warning(f"Could not analyze icons for {name}, using first candidate: {icon_url}")
         
         tint_color = app_config.get('tint_color')
         if not tint_color:

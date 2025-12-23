@@ -75,14 +75,14 @@
     "name": "UTM",
     "github_repo": "utmapp/UTM",
     "pre_release": false,
-    "icon_url": "https://raw.githubusercontent.com/utmapp/UTM/main/Platform/Assets.xcassets/AppIcon.appiconset/icon_512pt.png",
+    "icon_url": "https://raw.githubusercontent.com/utmapp/UTM/main/Platform/Assets.xcassets/AppIcon.appiconset/Icon.png",
     "bundle_id": "com.utmapp.UTM"
   },
   {
     "name": "UTM HV",
     "github_repo": "utmapp/UTM",
     "pre_release": false,
-    "icon_url": "https://raw.githubusercontent.com/utmapp/UTM/main/Platform/Assets.xcassets/AppIcon.appiconset/icon_512pt.png",
+    "icon_url": "https://raw.githubusercontent.com/utmapp/UTM/main/Platform/Assets.xcassets/AppIcon.appiconset/Icon.png",
     "bundle_id": "com.utmapp.UTM"
   },
   {
