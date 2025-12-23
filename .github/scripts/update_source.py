@@ -127,20 +127,24 @@ def select_best_ipa(assets, app_config):
     # Extract "flavor" keywords from app name (e.g., "SideStore" from "LiveContainer + SideStore")
     # We do this before full normalization to keep words separate
     name_clean = re.sub(r'\s*\((.*?)\)', '', app_config['name']) # Remove (Nightly) etc.
-    name_words = set(re.findall(r'[a-zA-Z0-9]{3,}', name_clean.lower()))
-    repo_words = set(re.findall(r'[a-zA-Z0-9]{3,}', app_config['github_repo'].lower()))
+    name_words = set(re.findall(r'[a-zA-Z0-9]{2,}', name_clean.lower()))
+    repo_words = set(re.findall(r'[a-zA-Z0-9]{2,}', app_config['github_repo'].lower()))
     flavor_keywords = name_words - repo_words
 
     for a in ipa_assets:
         base_name = os.path.splitext(a['name'])[0]
         norm_base = normalize_name(base_name)
         
-        # Exact match (after normalization) is best
-        if norm_base == norm_app_name or norm_base == norm_repo_name:
+        # Exact match with app name is best
+        if norm_base == norm_app_name:
             return a
             
-        # Calculate a subset score
+        # Exact match with repo name is second best
         score = 0
+        if norm_base == norm_repo_name:
+            score += 50
+        
+        # Calculate a subset score
         if norm_app_name in norm_base: score += 10
         if norm_base in norm_app_name: score += 5
         
@@ -148,7 +152,7 @@ def select_best_ipa(assets, app_config):
         base_name_lower = base_name.lower()
         for kw in flavor_keywords:
             if kw in base_name_lower:
-                score += 20
+                score += 40 # Increased bonus to beat repo name match if flavor matches
         
         scored_assets.append((score, a))
 
@@ -194,7 +198,7 @@ def apply_bundle_id_suffix(bundle_id, app_name, repo_name):
     if not bundle_id: return bundle_id
     
     name_lower = app_name.lower()
-    suffixes = ['nightly', 'beta', 'alpha', 'dev', 'test', 'experimental', 'pre-release', 'jit', 'sidestore']
+    suffixes = ['nightly', 'beta', 'alpha', 'dev', 'test', 'experimental', 'pre-release', 'jit', 'sidestore', 'hv']
     
     found_suffix = False
     for s in suffixes:
@@ -210,7 +214,7 @@ def apply_bundle_id_suffix(bundle_id, app_name, repo_name):
             # Use the extra parts of the name as suffix
             extra = name_lower.replace(repo_name_clean, '').strip()
             extra_clean = re.sub(r'[^a-z0-9]', '', extra)
-            if extra_clean and len(extra_clean) > 2:
+            if extra_clean and len(extra_clean) >= 2:
                 if not bundle_id.endswith(f".{extra_clean}"):
                     bundle_id = f"{bundle_id}.{extra_clean}"
     return bundle_id

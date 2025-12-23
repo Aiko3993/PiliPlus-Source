@@ -1,17 +1,17 @@
 # Supported Apps
 
-> *Last Updated: 2025-12-23 09:57:30 (UTC)*
+> *Last Updated: 2025-12-23 18:04:45 (UTC)*
 
 ## Standard Apps
 
 | Icon | Name | Description | Source |
 | :---: | :--- | :--- | :--- |
 | <img src="https://raw.githubusercontent.com/Aidoku/Aidoku/refs/heads/main/Shared/Assets.xcassets/AppIcon.appiconset/Icon.png" width="48" height="48"> | **Aidoku** | Free and open source manga reader for iOS and iPadOS | [Aidoku/Aidoku](https://github.com/Aidoku/Aidoku) |
-| <img src="https://raw.githubusercontent.com/venera-app/venera/master/macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_1024.png" width="48" height="48"> | **Venera** | A comic app | [venera-app/venera](https://github.com/venera-app/venera) |
-| <img src="https://raw.githubusercontent.com/NeoFreeBird/app/main/assets/main/PlugIns/OpenTwitterSafariExtension.appex/images/icon-512.png" width="48" height="48"> | **NeoFreeBird** | A modified Twitter app, with branding reverts, BHTwitter and other QoL modifications. | [NeoFreeBird/app](https://github.com/NeoFreeBird/app) |
-| <img src="https://raw.githubusercontent.com/open-ani/animeko/main/app/ios/Animeko/Assets.xcassets/AppIcon.appiconset/1024.png" width="48" height="48"> | **Animeko** | 集找番、追番、看番的一站式弹幕追番平台，云收藏同步 (Bangumi)，离线缓存，BitTorrent，弹幕云过滤。100% Kotlin/Compose Multiplatform | [open-ani/animeko](https://github.com/open-ani/animeko) |
-| <img src="https://raw.githubusercontent.com/bggRGjQaUbCoE/PiliPlus/main/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png" width="48" height="48"> | **PiliPlus** | PiliPlus | [bggRGjQaUbCoE/PiliPlus](https://github.com/bggRGjQaUbCoE/PiliPlus) |
-| <img src="https://raw.githubusercontent.com/Balackburn/Apollo/main/apollo_icons/icon_120.webp" width="48" height="48"> | **Apollo** | Altstore source and website for Apollo for Reddit (with ImprovedCustomApi) | [Balackburn/Apollo](https://github.com/Balackburn/Apollo) |
+| <img src="https://raw.githubusercontent.com/venera-app/venera/refs/heads/master/assets/app_icon.png" width="48" height="48"> | **Venera** | A comic app | [venera-app/venera](https://github.com/venera-app/venera) |
+| <img src="https://raw.githubusercontent.com/NeoFreeBird/app/refs/heads/main/Branding/Icon.png" width="48" height="48"> | **NeoFreeBird** | A modified Twitter app, with branding reverts, BHTwitter and other QoL modifications. | [NeoFreeBird/app](https://github.com/NeoFreeBird/app) |
+| <img src="https://raw.githubusercontent.com/open-ani/animeko/main/app/desktop/appResources/linux-x64/icon.png" width="48" height="48"> | **Animeko** | 集找番、追番、看番的一站式弹幕追番平台，云收藏同步 (Bangumi)，离线缓存，BitTorrent，弹幕云过滤。100% Kotlin/Compose Multiplatform | [open-ani/animeko](https://github.com/open-ani/animeko) |
+| <img src="https://raw.githubusercontent.com/bggRGjQaUbCoE/PiliPlus/main/assets/images/logo/logo.png" width="48" height="48"> | **PiliPlus** | PiliPlus | [bggRGjQaUbCoE/PiliPlus](https://github.com/bggRGjQaUbCoE/PiliPlus) |
+| <img src="https://raw.githubusercontent.com/Balackburn/Apollo/refs/heads/main/apollo_icons/icon_91.webp" width="48" height="48"> | **Apollo** | Altstore source and website for Apollo for Reddit (with ImprovedCustomApi) | [Balackburn/Apollo](https://github.com/Balackburn/Apollo) |
 | <img src="https://raw.githubusercontent.com/hrydgard/ppsspp/master/ios/assets.xcassets/AppIcon.appiconset/icon_backfill_1024.png" width="48" height="48"> | **PPSSPP** | A PSP emulator for Android, Windows, Mac and Linux, written in C++. Want to contribute? Join us on Discord at https://discord.gg/5NJB6dD or just send pull requests / issues. For discussion use the forums at forums.ppsspp.org. | [hrydgard/ppsspp](https://github.com/hrydgard/ppsspp) |
 | <img src="https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon1024.png" width="48" height="48"> | **LiveContainer** | Run iOS apps without actually installing them! | [LiveContainer/LiveContainer](https://github.com/LiveContainer/LiveContainer) |
 | <img src="https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon1024.png" width="48" height="48"> | **LiveContainer (Nightly)** | Run iOS apps without actually installing them! | [LiveContainer/LiveContainer](https://github.com/LiveContainer/LiveContainer) |
