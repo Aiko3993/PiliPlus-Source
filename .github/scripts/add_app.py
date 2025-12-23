@@ -49,34 +49,55 @@ def process_single_app(app_data, client=None):
     data = load_json(target_path)
     
     # Check if exists
-    existing_entry = next((item for item in data if item.get('github_repo', '').lower() == repo.lower()), None)
+    # Matching strategy: Same repo AND same name to support flavors/versions
+    existing_entry = next((item for item in data 
+                          if item.get('github_repo', '').lower() == repo.lower() 
+                          and item.get('name', '').lower() == app_name.lower()), None)
     
     status = ""
     message = ""
 
     valid_icon, icon_msg = validate_url(icon_url)
     if not valid_icon:
-        # Fallback or warning? 
-        # For add_app, maybe we should just clear it if invalid?
-        # Or keep it but warn? The original script just updated it.
-        # Let's keep it but warn in logs.
         logger.warning(f"Invalid icon URL for {repo}: {icon_msg}")
-        icon_url = "" # Clear it if invalid? Or keep original if exists?
+        icon_url = "" 
     
+    # Auto-detect pre-release/tag filters from name
+    pre_release = False
+    tag_regex = None
+    
+    name_lower = app_name.lower()
+    if any(kw in name_lower for kw in ['nightly', 'beta', 'alpha', 'dev', 'pre-release', 'experimental']):
+        pre_release = True
+        # If "nightly" is specifically mentioned, add a tag filter for it
+        if 'nightly' in name_lower:
+            tag_regex = 'nightly'
+        elif 'beta' in name_lower:
+            tag_regex = 'beta'
+
     if existing_entry:
-        logger.info(f"Updating existing entry for {repo}")
+        logger.info(f"Updating existing entry for {repo} ({app_name})")
         existing_entry['name'] = app_name
         if icon_url:
             existing_entry['icon_url'] = icon_url
             logger.info(f"Updated icon_url to {icon_url}")
+        
+        # Update flags if they weren't manually overridden (or just keep them synced)
+        existing_entry['pre_release'] = pre_release
+        if tag_regex:
+            existing_entry['tag_regex'] = tag_regex
+            
         status = "updated"
         message = f"Updated details in {category}"
     else:
-        logger.info(f"Adding new entry for {repo}")
+        logger.info(f"Adding new entry for {repo} ({app_name})")
         new_entry = {
             'name': app_name,
-            'github_repo': repo
+            'github_repo': repo,
+            'pre_release': pre_release
         }
+        if tag_regex:
+            new_entry['tag_regex'] = tag_regex
         if icon_url:
             new_entry['icon_url'] = icon_url
             logger.info(f"Set icon_url to {icon_url}")

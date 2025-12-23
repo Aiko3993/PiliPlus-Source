@@ -26,12 +26,13 @@ def validate_apps_json(file_path, global_seen_repos):
             logger.error(f"Item {idx}: {msg} ('{repo}')")
             success = False
         else:
-            repo_lower = repo.lower()
-            if repo_lower in global_seen_repos:
-                logger.error(f"Item {idx}: Duplicate repo '{repo}' (globally)")
+            # Check for duplicate Repo + Name combination
+            repo_name_key = (repo.lower(), name.lower())
+            if repo_name_key in global_seen_repos:
+                logger.error(f"Item {idx}: Duplicate entry for repo '{repo}' with name '{name}'")
                 success = False
             else:
-                global_seen_repos.add(repo_lower)
+                global_seen_repos.add(repo_name_key)
 
         # 3. Check Icon URL
         icon_url = app.get('icon_url')

@@ -107,19 +107,50 @@ class GitHubClient:
         resp = self.get(url)
         return resp.json() if resp else None
 
-    def get_latest_release(self, repo):
+    def get_latest_release(self, repo, prefer_pre_release=False, tag_regex=None):
         url = f"https://api.github.com/repos/{repo}/releases"
         resp = self.get(url)
         if not resp:
             return None
         
         releases = resp.json()
+        if not isinstance(releases, list):
+            return None
+
         active_releases = [r for r in releases if not r.get('draft', False)]
         if not active_releases:
             return None
             
-        # Sort by published_at
-        return sorted(active_releases, key=lambda r: r.get('published_at') or '', reverse=True)[0]
+        # Filter by tag regex if provided
+        if tag_regex:
+            try:
+                pattern = re.compile(tag_regex, re.IGNORECASE)
+                active_releases = [r for r in active_releases if pattern.search(r.get('tag_name', ''))]
+            except Exception as e:
+                logger.error(f"Invalid tag_regex '{tag_regex}': {e}")
+
+        if not active_releases:
+            return None
+
+        # Filter based on preference
+        stable = [r for r in active_releases if not r.get('prerelease', False)]
+        pre = [r for r in active_releases if r.get('prerelease', False)]
+
+        def get_date(r): return r.get('published_at') or ''
+
+        if prefer_pre_release:
+            sorted_pre = sorted(pre, key=get_date, reverse=True)
+            sorted_stable = sorted(stable, key=get_date, reverse=True)
+            
+            if sorted_pre:
+                if not sorted_stable or get_date(sorted_pre[0]) >= get_date(sorted_stable[0]):
+                    return sorted_pre[0]
+            
+            return sorted_stable[0] if sorted_stable else (sorted_pre[0] if sorted_pre else None)
+        else:
+            if stable:
+                return sorted(stable, key=get_date, reverse=True)[0]
+            return sorted(active_releases, key=get_date, reverse=True)[0]
 
     def check_repo_exists(self, repo):
         url = f"https://api.github.com/repos/{repo}"

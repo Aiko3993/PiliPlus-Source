@@ -86,8 +86,12 @@ The deployment structure is a flattened version of `main`:
 *   **apps.json (`sources/standard/`, `sources/nsfw/`)**:
     *   The data source of the project.
     *   **Must include**: `name`, `github_repo` (Format: `Owner/Repo`).
-    *   **Optional**: `icon_url`, `tint_color` (Must be hex code `#RRGGBB`).
-    *   **Forbidden**: Duplicate repository addresses (checked globally across all sources).
+    *   **Optional**: 
+        *   `icon_url`, `tint_color` (Must be hex code `#RRGGBB`).
+        *   `ipa_regex`: A regular expression to select a specific IPA from GitHub Releases (useful for apps with multiple flavors like UTM).
+        *   `pre_release`: Boolean (default: `false`). Set to `true` to prefer pre-releases/nightly versions.
+        *   `tag_regex`: A regular expression to filter releases by their tag name.
+    *   **Note**: Multiple entries for the same repository are allowed as long as their `name` is unique (e.g., "UTM" and "UTM (TrollStore)").
 *   **deploy.yml (`.github/workflows/`)**:
     *   Responsible for assembling the website and source files and pushing them to the `gh-pages` branch.
     *   Triggered by `push` to `main` or completion of update/process workflows.
@@ -256,11 +260,13 @@ In case of severe failure (e.g., generating a corrupted source.json causing clie
 | v1.9 | 2025-12-22 | AI Assistant | Introduced `.github/scripts/utils.py` for centralized logic and robust error handling. Refactored scripts to use shared utilities. Updated directory structure documentation. |
 | v1.10 | 2025-12-22 | AI Assistant | **Major Architecture Change**: Isolated website source files to `website/` directory. Configured `gh-pages` as an orphan branch for deployment artifacts. Updated `deploy.yml` for cleaner main branch and hot-reloading support. |
 | v1.11 | 2025-12-22 | AI Assistant | **Directory Consolidation**: Moved `standard/` and `nsfw/` into a unified `sources/` directory. Updated all scripts, workflows, and documentation to reflect this change. |
-256→| v1.13 | 2025-12-22 | AI Assistant | **Frontend Overhaul**: Implemented modern "Flat Card" design with Tailwind CSS. Added dynamic theming based on app tint color. Refactored JS/CSS structure for modularity. |
-257→| v1.14 | 2025-12-22 | AI Assistant | **Cleanup & Optimization**: Removed deprecated `index.html` from root. Updated `MAINTENANCE.md` to reflect new directory structure (ES Modules). Verified full CI pipeline robustness. |
+| v1.13 | 2025-12-22 | AI Assistant | **Frontend Overhaul**: Implemented modern "Flat Card" design with Tailwind CSS. Added dynamic theming based on app tint color. Refactored JS/CSS structure for modularity. |
+| v1.14 | 2025-12-22 | AI Assistant | **Cleanup & Optimization**: Removed deprecated `index.html` from root. Updated `MAINTENANCE.md` to reflect new directory structure (ES Modules). Verified full CI pipeline robustness. |
 | v1.15 | 2025-12-22 | AI Assistant | **Testing Infrastructure**: Added `.github/scripts/mock_test_runner.py` for comprehensive local logic verification without GitHub API dependencies. Updated validation guidelines. |
 | v1.16 | 2025-12-22 | AI Assistant | **Logic Hardening**: Refined `process_issue.yml` and `add_app.py` to ensure robust icon URL extraction and commit message generation. Implemented "Sync Back" logic in `update_source.py` to automatically populate missing metadata in `apps.json` from auto-discovered sources. |
 | v1.17 | 2025-12-23 | AI Assistant | **Easter Egg Overhaul**: Refactored `effects.js` significantly. <br>1. **Retro Pong**: Rewrote physics engine (acceleration, angular reflection), added game states (serve/play/score), and optimized touch handling.<br>2. **ASCII Waifu**: Replaced static art with `ART_COMPILER_V1.0` interactive terminal for custom ASCII injection.<br>3. **Safety**: Removed flash effects from Konami Code entry; added responsive text scaling.<br>4. **Stability**: Fixed `autoDismiss` logic across all effects. |
+| v1.18 | 2025-12-23 | AI Assistant | **Infrastructure Fixes**: <br>1. **GitHub Actions**: Resolved 403 Forbidden error by removing task-level permission overrides in `process_issue.yml`. <br>2. **Issue Templates**: Fixed YAML syntax in `add_app.yml` to restore template visibility and enforced category ordering (Standard > NSFW). <br>3. **Bug Redirection**: Fully redirected Bug Reports to GitHub Discussions via `config.yml`. |
+| v1.19 | 2025-12-23 | AI Assistant | **Release & IPA Logic Enhancements**: <br>1. **Stability First**: Default to latest stable release instead of newest pre-release. <br>2. **Nightly Support**: Added `pre_release` flag in `apps.json` to opt-in for beta/nightly versions. <br>3. **Tag Filtering**: Added `tag_regex` support to allow pinning or filtering releases by tag name. <br>4. **Smart IPA Picker**: Implemented `select_best_ipa` to automatically prioritize clean IPA names (filtering out `-Remote`, `-HV`, etc.) and added `ipa_regex` override support. <br>5. **Multi-Flavor Support**: Updated validation to allow multiple entries for the same repo with unique names. |
 
 ---
 

@@ -96,15 +96,77 @@ def load_existing_source(source_file, default_name, default_identifier):
         "news": []
     }
 
+def normalize_name(s):
+    """Normalize string for fuzzy comparison: lowercase and remove non-alphanumeric chars and common version suffixes."""
+    if not s: return ""
+    s = s.lower()
+    # Remove common version/flavor suffixes from name before normalization
+    s = re.sub(r'\s*\((nightly|beta|alpha|dev|pre-release|experimental|trollstore|jit|sideloading)\)', '', s)
+    s = re.sub(r'-(nightly|beta|alpha|dev|pre-release|experimental|trollstore|jit|sideloading)', '', s)
+    return re.sub(r'[^a-z0-9]', '', s)
+
+def select_best_ipa(assets, app_config):
+    """Select the most appropriate IPA asset based on config and heuristics."""
+    ipa_assets = [a for a in assets if a.get('name', '').lower().endswith('.ipa')]
+    if not ipa_assets:
+        return None
+        
+    if len(ipa_assets) == 1:
+        return ipa_assets[0]
+        
+    # 1. Regex Match (User Override)
+    ipa_regex = app_config.get('ipa_regex')
+    if ipa_regex:
+        try:
+            pattern = re.compile(ipa_regex, re.IGNORECASE)
+            for a in ipa_assets:
+                if pattern.search(a['name']):
+                    return a
+        except Exception as e:
+            logger.error(f"Invalid ipa_regex '{ipa_regex}': {e}")
+
+    # 2. Fuzzy Match with Name or Repo Name
+    # This handles "UTM-HV" matching "UTM HV" or "UTM_HV"
+    norm_app_name = normalize_name(app_config['name'])
+    norm_repo_name = normalize_name(app_config['github_repo'].split('/')[-1])
+    
+    for a in ipa_assets:
+        base_name = os.path.splitext(a['name'])[0]
+        norm_base = normalize_name(base_name)
+        if norm_base == norm_app_name or norm_base == norm_repo_name:
+            return a
+
+    # 3. Smart Filtering: Exclude common "flavors" if multiple exist
+    # We prefer the one without suffixes like -Remote, -HV, -SE
+    exclude_patterns = ['-remote', '-hv', '-se', '-jailbroken', '-macos', '-linux', '-windows']
+    
+    filtered = []
+    for a in ipa_assets:
+        name_lower = a['name'].lower()
+        if not any(p in name_lower for p in exclude_patterns):
+            filtered.append(a)
+            
+    if filtered:
+        return filtered[0]
+        
+    # 4. Fallback: Just return the first one
+    return ipa_assets[0]
+
 def process_app(app_config, existing_source, client, apps_list_to_update=None):
     repo = app_config['github_repo']
     name = app_config['name']
     
     logger.info(f"Processing {name} ({repo})...")
     
+    # Improved matching: Must match BOTH repo and name to support flavors
     app_entry = next((a for a in existing_source['apps'] 
-                      if a.get('githubRepo') == repo or 
-                      (not a.get('githubRepo') and a.get('developerName') == repo.split('/')[0] and a.get('name') == name)), None)
+                      if a.get('githubRepo') == repo and a.get('name') == name), None)
+
+    # Fallback for migration: if no exact match, try repo-only match if it's the only one
+    if not app_entry:
+        repo_matches = [a for a in existing_source['apps'] if a.get('githubRepo') == repo]
+        if len(repo_matches) == 1:
+            app_entry = repo_matches[0]
 
     found_icon_auto = None
 
@@ -130,14 +192,18 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
         
         app_entry.pop('permissions', None)
     
-    release = client.get_latest_release(repo)
+    release = client.get_latest_release(
+        repo, 
+        prefer_pre_release=app_config.get('pre_release', False),
+        tag_regex=app_config.get('tag_regex')
+    )
 
     if not release:
         logger.warning(f"No release found for {name}")
         return existing_source
 
     # Find IPA
-    ipa_asset = next((a for a in release.get('assets', []) if a.get('name', '').lower().endswith('.ipa')), None)
+    ipa_asset = select_best_ipa(release.get('assets', []), app_config)
     if not ipa_asset:
         logger.warning(f"No IPA found for {name}")
         return existing_source
