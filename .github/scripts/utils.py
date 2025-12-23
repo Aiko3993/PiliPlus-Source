@@ -196,18 +196,25 @@ def score_icon_path(path):
     # Filenames
     name = os.path.basename(p)
     if 'icon' in name: score += 30
-    elif 'logo' in name: score += 20
+    elif 'logo' in name: score += 25
     elif 'app' in name: score += 10
     
-    # Resolution preference (if visible in path)
-    if '1024' in name: score += 15
-    elif '512' in name: score += 10
+    # Square/Resolution preference
+    if 'square' in name: score += 20
+    if '1024' in name: score += 20
+    elif '512' in name: score += 15
+    elif '256' in name: score += 10
     elif '120' in name: score += 5
     
-    # Penalties
-    if 'android' in p: score -= 50
-    if 'small' in name: score -= 10
-    if 'toolbar' in name: score -= 20
+    # Penalties for things that are likely NOT the main app icon or are pre-masked
+    if 'android' in p: score -= 60
+    if 'small' in name: score -= 20
+    if 'toolbar' in name: score -= 30
+    if 'preview' in name: score -= 40
+    if 'mask' in name: score -= 30
+    if 'rounded' in name: score -= 20
+    if 'notification' in name: score -= 50
+    if 'tabbar' in name: score -= 40
     
     # URL reliability
     if 'raw.githubusercontent.com' in p: score += 20
@@ -215,13 +222,12 @@ def score_icon_path(path):
     
     return score
 
-def find_best_icon(repo, client):
+def find_best_icon(repo, client, limit=5):
     """
-    Auto-detect the best app icon from the GitHub repository.
-    Prioritizes iOS AppIcon sets, then common logo names.
-    Supports png, jpg, jpeg, webp, svg.
+    Auto-detect the best app icon candidates from the GitHub repository.
+    Returns a list of raw URLs sorted by score.
     """
-    logger.info(f"Searching for icon in {repo}...")
+    logger.info(f"Searching for icon candidates in {repo}...")
     
     # 1. Try fetching the full git tree (recursive)
     try:
@@ -236,9 +242,9 @@ def find_best_icon(repo, client):
             if root_contents and isinstance(root_contents, list):
                 tree_data = {'tree': [{'path': c['name'], 'type': 'blob' if c['type']=='file' else 'tree'} for c in root_contents]}
             else:
-                return None
+                return []
         except:
-            return None
+            return []
 
     candidates = []
     valid_exts = ('.png', '.jpg', '.jpeg', '.webp', '.svg')
@@ -254,17 +260,20 @@ def find_best_icon(repo, client):
         try:
             repo_info = client.get_repo_info(repo)
             if repo_info and 'owner' in repo_info:
-                return repo_info['owner']['avatar_url']
+                return [repo_info['owner']['avatar_url']]
         except:
             pass
-        return None
+        return []
 
     candidates.sort(key=lambda x: x[0], reverse=True)
-    best_path = candidates[0][1]
     
     repo_info = client.get_repo_info(repo)
+    if not repo_info: return []
     default_branch = repo_info.get('default_branch', 'main')
     
-    raw_url = f"https://raw.githubusercontent.com/{repo}/{default_branch}/{best_path}"
-    logger.info(f"Found icon candidate: {raw_url} (Score: {candidates[0][0]})")
-    return raw_url
+    top_urls = []
+    for s, path in candidates[:limit]:
+        raw_url = f"https://raw.githubusercontent.com/{repo}/{default_branch}/{path}"
+        top_urls.append(raw_url)
+        
+    return top_urls

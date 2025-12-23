@@ -173,6 +173,22 @@ def select_best_ipa(assets, app_config):
     # 4. Fallback: Just return the first one
     return ipa_assets[0]
 
+def is_square_image(image_url, client, tolerance=0.05):
+    """Check if image at URL is approximately square."""
+    if not image_url or not image_url.startswith(('http://', 'https://')):
+        return False
+    try:
+        response = client.get(image_url, timeout=10)
+        if not response: return False
+        
+        img = Image.open(BytesIO(response.content))
+        width, height = img.size
+        aspect_ratio = width / height
+        return (1.0 - tolerance) <= aspect_ratio <= (1.0 + tolerance)
+    except Exception as e:
+        logger.warning(f"Could not check aspect ratio for {image_url}: {e}")
+        return True # Assume OK if check fails
+
 def process_app(app_config, existing_source, client, apps_list_to_update=None):
     repo = app_config['github_repo']
     name = app_config['name']
@@ -202,16 +218,33 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
         best_icon = config_icon if config_icon and config_icon not in ['None', '_No response_'] else current_icon
         
         # Always try to find the best possible icon from the repo
-        repo_icon = find_best_icon(repo, client)
+        repo_icons = find_best_icon(repo, client)
+        repo_icon = None
+        if repo_icons:
+            # Try to find the first square one
+            for cand in repo_icons:
+                if is_square_image(cand, client):
+                    repo_icon = cand
+                    break
+            else:
+                repo_icon = repo_icons[0]
         
         if repo_icon:
             if not best_icon:
                 best_icon = repo_icon
             else:
-                # Compare scores
+                # Compare scores, but give preference to squareness
                 score_current = score_icon_path(best_icon)
                 score_repo = score_icon_path(repo_icon)
-                if score_repo > score_current:
+                
+                # If current icon is not square but repo icon is, definitely switch
+                current_is_square = is_square_image(best_icon, client)
+                repo_is_square = is_square_image(repo_icon, client)
+                
+                if repo_is_square and not current_is_square:
+                    logger.info(f"Replacing non-square icon with square version from repo: {repo_icon}")
+                    best_icon = repo_icon
+                elif score_repo > score_current:
                     logger.info(f"Replacing icon with better version from repo: {repo_icon} (Score {score_repo} > {score_current})")
                     best_icon = repo_icon
         
@@ -272,6 +305,30 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
 
         sha256 = get_ipa_sha256(temp_path)
         
+        # Ensure pre-release versions have unique bundle identifiers to coexist
+        # We also check for "flavor" keywords in the app name
+        name_lower = name.lower()
+        suffixes = ['nightly', 'beta', 'alpha', 'dev', 'test', 'experimental', 'pre-release', 'jit', 'sidestore']
+        
+        found_suffix = False
+        for s in suffixes:
+            if s in name_lower:
+                if not bundle_id.endswith(f".{s}"):
+                    bundle_id = f"{bundle_id}.{s}"
+                found_suffix = True
+                break
+        
+        # If no standard suffix but name is different from repo, use a hash or normalized suffix
+        if not found_suffix:
+            repo_name = repo.split('/')[-1].lower()
+            if normalize_name(name) != normalize_name(repo_name):
+                # Use the extra parts of the name as suffix
+                extra = name_lower.replace(repo_name, '').strip()
+                extra_clean = re.sub(r'[^a-z0-9]', '', extra)
+                if extra_clean and len(extra_clean) > 2:
+                    if not bundle_id.endswith(f".{extra_clean}"):
+                        bundle_id = f"{bundle_id}.{extra_clean}"
+
     except Exception as e:
         logger.error(f"Download or processing failed for {name}: {e}")
         if os.path.exists(temp_path):
@@ -317,9 +374,18 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
         # Handle Icon (Config > Auto-fetch > Fallback)
         icon_url = app_config.get('icon_url', '')
         if not icon_url or icon_url in ['None', '_No response_']:
-            found_icon_auto = find_best_icon(repo, client)
-            if found_icon_auto:
-                icon_url = found_icon_auto
+            icon_candidates = find_best_icon(repo, client)
+            if icon_candidates:
+                # Try to find the first square icon among top candidates
+                for cand in icon_candidates:
+                    if is_square_image(cand, client):
+                        icon_url = cand
+                        logger.info(f"Selected square icon for {name}: {icon_url}")
+                        break
+                else:
+                    # Fallback to the best scored one if no square found
+                    icon_url = icon_candidates[0]
+                    logger.warning(f"No square icon found for {name}, using best candidate: {icon_url}")
         
         tint_color = app_config.get('tint_color')
         if not tint_color:
