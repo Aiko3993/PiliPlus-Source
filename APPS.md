@@ -1,6 +1,6 @@
 # Supported Apps
 
-> *Last Updated: 2025-12-24 15:12:34 (UTC)*
+> *Last Updated: 2025-12-25 11:55:27 (UTC)*
 
 ## Standard Apps
 
@@ -25,7 +25,6 @@
 | <img src="https://raw.githubusercontent.com/SideStore/SideStore/develop/AltStore/Resources/Icons.xcassets/AppIcon.appiconset/1024.png" width="48" height="48"> | **SideStore** | SideStore is a fork of AltStore that doesn't require an AltServer. | [SideStore/SideStore](https://github.com/SideStore/SideStore) |
 | <img src="https://raw.githubusercontent.com/Nyasami/Ksign/main/Ksign/Resources/Assets.xcassets/AppIcon.appiconset/Ksign-default.png" width="48" height="48"> | **Ksign** | The "cleaner" Esign app. | [Nyasami/Ksign](https://github.com/Nyasami/Ksign) |
 | <img src="https://raw.githubusercontent.com/Lakr233/Asspp/refs/heads/main/Asspp/App/Assets.xcassets/AppIcon.appiconset/asspp_tinted.png" width="48" height="48"> | **Asspp** | The App Store for your multi-account eco system. | [Lakr233/Asspp](https://github.com/Lakr233/Asspp) |
-| <img src="https://raw.githubusercontent.com/jpd002/Play-/master/Source/ui_ios/Resources/icon@2x.png" width="48" height="48"> | **Play! (Nightly)** | Play! - PlayStation2 Emulator | [jpd002/Play-](https://github.com/jpd002/Play-) |
 
 ## NSFW Apps
 

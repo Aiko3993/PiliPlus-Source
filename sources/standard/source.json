@@ -364,7 +364,7 @@
       "version": "1.0.cd000a3",
       "versionDate": "2025-11-02",
       "versionDescription": "Nightly build from commit cd000a30403595f1856c07bee32e135803963d50",
-      "downloadURL": "https://github.com/Aiko3993/iOS-Sideload-Source/releases/download/app-artifacts/AngelAuraMC_Amethyst-iOS_org.angelauramc.amethyst-ios.ipa_cd000a3.ipa",
+      "downloadURL": "https://github.com/Aiko3993/iOS-Sideload-Source/releases/download/artifacts-20251102/AngelAuraMC_Amethyst-iOS_org.angelauramc.amethyst-ios_cd000a3.ipa",
       "localizedDescription": "A Minecraft: Java Edition Launcher for Android and iOS based on PojavLauncher. This repository contains source code for iOS/iPadOS platform.",
       "iconURL": "https://raw.githubusercontent.com/AngelAuraMC/Amethyst-iOS/main/Natives/Assets.xcassets/AppIcon-Dark.appiconset/AppIcon-Dark_1024x1024.png",
       "tintColor": "#2F2F2F",
@@ -375,7 +375,7 @@
           "version": "1.0.cd000a3",
           "date": "2025-11-02",
           "localizedDescription": "Nightly build from commit cd000a30403595f1856c07bee32e135803963d50",
-          "downloadURL": "https://github.com/Aiko3993/iOS-Sideload-Source/releases/download/app-artifacts/AngelAuraMC_Amethyst-iOS_org.angelauramc.amethyst-ios.ipa_cd000a3.ipa",
+          "downloadURL": "https://github.com/Aiko3993/iOS-Sideload-Source/releases/download/artifacts-20251102/AngelAuraMC_Amethyst-iOS_org.angelauramc.amethyst-ios_cd000a3.ipa",
           "size": 148571576,
           "sha256": "df2b2874e835094b55d5a1dfe73099957a30f6f833c306ad2633cce9737fc8eb"
         }
@@ -523,48 +523,6 @@
         }
       ],
       "sha256": "8a108dfb00d0aa129643e48ba6f172ce9a1b71d336ce9fa9374d80dc5cba7462"
-    },
-    {
-      "name": "Play! (Nightly)",
-      "githubRepo": "jpd002/Play-",
-      "bundleIdentifier": "com.virtualapplications.play.nightly",
-      "developerName": "jpd002",
-      "version": "0.71-87-gc1eb2314.2025-12-24",
-      "versionDate": "2025-12-24",
-      "versionDescription": "Nightly build from commit c1eb2314a7ba018a056e437ce480b12b8ceef8ac",
-      "downloadURL": "https://github.com/Aiko3993/iOS-Sideload-Source/releases/download/app-artifacts/jpd002_Play-_Play_iOS_c1eb231.ipa",
-      "localizedDescription": "Play! - PlayStation2 Emulator",
-      "iconURL": "https://raw.githubusercontent.com/jpd002/Play-/master/Source/ui_ios/Resources/icon@2x.png",
-      "tintColor": "#BCBCFF",
-      "size": 7085641,
-      "screenshotURLs": [],
-      "versions": [
-        {
-          "version": "0.71-87-gc1eb2314.2025-12-24",
-          "date": "2025-12-24",
-          "localizedDescription": "Nightly build from commit c1eb2314a7ba018a056e437ce480b12b8ceef8ac",
-          "downloadURL": "https://github.com/Aiko3993/iOS-Sideload-Source/releases/download/app-artifacts/jpd002_Play-_Play_iOS_c1eb231.ipa",
-          "size": 7085641,
-          "sha256": "ba41a5c51a22ab06ed33dc38173650cc2212c08ed6b2fff52ce30c2b2dfa13d0"
-        },
-        {
-          "version": "0.71-86-gd0f13752.2025-12-24",
-          "date": "2025-12-24",
-          "localizedDescription": "Nightly build from commit d0f1375248e3003199cb973a12332b4cc9f0724f",
-          "downloadURL": "https://github.com/Aiko3993/iOS-Sideload-Source/releases/download/app-artifacts/jpd002_Play-_Play_iOS_d0f1375.ipa",
-          "size": 7085982,
-          "sha256": "1911d84624edf4da55ebe718aead87d81326cd52df15272cccac85c71c00022b"
-        },
-        {
-          "version": "0.71-84-g5171569d.2025-12-23",
-          "date": "2025-12-23",
-          "localizedDescription": "Nightly build from commit 5171569d0018e02f731d63ac37d8c34da41ff0a7",
-          "downloadURL": "https://github.com/Aiko3993/iOS-Sideload-Source/releases/download/app-artifacts/jpd002_Play-_Play_iOS_5171569.ipa",
-          "size": 7085608,
-          "sha256": "a30d8c9588a3673d7662218a96d4268f5d019dd6ce3f3c9140cf49f1eb5170c2"
-        }
-      ],
-      "sha256": "ba41a5c51a22ab06ed33dc38173650cc2212c08ed6b2fff52ce30c2b2dfa13d0"
     }
   ],
   "news": []
