@@ -96,6 +96,8 @@ The deployment structure is a flattened version of `main`:
     *   **Advanced Logic**:
         *   **Fast Skip**: The script detects if `downloadURL` (Release/Artifact) is unchanged. If unchanged AND the app entry in `apps.json` (name/icon) hasn't changed, it skips heavy processing (scraping & downloading).
         *   **Metadata Auto-Sync**: Fields like `icon_url` and `bundle_id` discovered by the script are automatically written back to `apps.json` to speed up future runs and improve data completeness.
+        *   **Daily Artifact Releases**: Nightly/Artifact builds are hosted in daily releases (`artifacts-YYYYMMDD`) to avoid cluttering a single release.
+        *   **Smart Cleanup**: Automatically deletes old assets for the same app (based on Bundle ID/App Name) before uploading new ones, and retains only the last 7 days of daily releases.
         *   **Artifact Selection Heuristic**: When searching inside GitHub Artifacts (ZIP), the script follows a 6-step heuristic:
             1. **Exact Name Match**: Matches `artifact_name` from config.
             2. **IPA Suffix**: Looks for files ending in `.ipa`.
@@ -103,11 +105,12 @@ The deployment structure is a flattened version of `main`:
             4. **Exclusion Filter**: Removes artifacts containing "log", "symbol", "test", "debug", etc.
             5. **IPA Repackaging**: If only a `.app` folder is found, the script automatically packages it into a standard `.ipa` (Payload/ structure).
             6. **Ultimate Fallback**: Uses the first available artifact if all else fails.
-        *   **App-Artifacts Hosting**: 
-            *   **Direct Link Generation**: Instead of relying solely on `nightly.link` (which often returns 404s or ZIPs), the script now downloads artifacts via official GitHub API, repacks them if needed, and uploads them to a dedicated local release (`app-artifacts`).
+        *   **Artifact Hosting & Direct Links**: 
+            *   **Direct Link Generation**: Instead of relying solely on `nightly.link` (which often returns 404s or ZIPs), the script now downloads artifacts via official GitHub API, repacks them if needed, and uploads them to a daily release (`artifacts-YYYYMMDD`).
             *   **Compatibility**: This provides standard IPA direct download links (`browser_download_url`), ensuring 100% compatibility with tools like LiveContainer and SideStore.
-            *   **Maintenance**: Old assets in the `app-artifacts` release are automatically deleted before uploading new ones to save space and prevent confusion.
-            *   **Nightly.link (Smart Proxy)**: If the primary GitHub API download fails, the script falls back to `nightly.link`. Crucially, it now **unpacks the ZIP, extracts the IPA, and re-hosts it** on `app-artifacts`, ensuring the final user always receives a direct IPA link regardless of the source.
+            *   **Maintenance**: Old assets for the same app are automatically deleted (based on Bundle ID/App Name) before uploading new ones.
+            *   **Nightly.link (Smart Proxy)**: If the primary GitHub API download fails, the script falls back to `nightly.link`. Crucially, it now **unpacks the ZIP, extracts the IPA, and re-hosts it** on the daily release, ensuring the final user always receives a direct IPA link.
+            *   **Retention**: Only the most recent 7 daily releases are kept to prevent storage bloat.
     *   **Note**: Multiple entries for the same repository are allowed as long as their `name` is unique (e.g., "UTM" and "UTM (TrollStore)").
 *   **deploy.yml (`.github/workflows/`)**:
     *   Responsible for assembling the website and source files and pushing them to the `gh-pages` branch.

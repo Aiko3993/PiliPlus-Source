@@ -430,17 +430,21 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
         # Pre-calculate what our direct download URL would be if we upload it
         current_repo = client.get_current_repo()
         if current_repo:
+            # Daily release tag: artifacts-YYYYMMDD
+            release_tag = f"artifacts-{release_date.replace('-', '')}"
+            
             # Use a unique name for the asset to avoid collisions and allow skipping redundant downloads
             # Format: Owner_Repo_ArtifactName_SHA.ipa
-            asset_name = f"{repo.replace('/', '_')}_{artifact['name']}_{version}"
-            if asset_name.lower().endswith('.ipa'):
-                asset_name = asset_name[:-4]
-            asset_name += ".ipa"
+            clean_artifact_name = artifact['name']
+            if clean_artifact_name.lower().endswith('.ipa'):
+                clean_artifact_name = clean_artifact_name[:-4]
             
-            # This is a bit of a guess on the URL structure but it's standard for GitHub Releases
-            # https://github.com/owner/repo/releases/download/app-artifacts/asset_name.ipa
-            direct_url = f"https://github.com/{current_repo}/releases/download/app-artifacts/{asset_name}"
+            asset_name = f"{repo.replace('/', '_')}_{clean_artifact_name}_{version}.ipa"
+            
+            # https://github.com/owner/repo/releases/download/artifacts-YYYYMMDD/asset_name.ipa
+            direct_url = f"https://github.com/{current_repo}/releases/download/{release_tag}/{asset_name}"
         else:
+            release_tag = "app-artifacts"
             asset_name = None
             direct_url = None
             
@@ -608,22 +612,25 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
                             # Copy to temp_path for metadata extraction
                             shutil.copy2(target_ipa, temp_path)
                             
-                            # Upload to our own repo to get a direct link
+                            # Extract metadata to get bundle_id for smart cleanup
+                            _, _, bid_ipa = get_ipa_metadata(target_ipa, app_entry.get('bundleIdentifier') if app_entry else None)
+                            
+                            # Upload to the daily release
                             if current_repo and client.token:
-                                tag_name = "app-artifacts"
-                                release = client.get_release_by_tag(current_repo, tag_name)
+                                release = client.get_release_by_tag(current_repo, release_tag)
                                 if not release:
-                                    release = client.create_release(current_repo, tag_name, 
-                                                                  name="App Artifacts", 
+                                    release = client.create_release(current_repo, release_tag, 
+                                                                  name=f"App Artifacts ({datetime.now().strftime('%Y-%m-%d')})", 
                                                                   body="This release contains direct download links for apps that are only available as GitHub Artifacts.")
                                 
                                 if release:
-                                    # asset_name is already calculated at line 365
-                                    asset = client.upload_release_asset(current_repo, release['id'], target_ipa, name=asset_name)
+                                    # Use smart cleanup: pass bundle_id and app_name to delete old versions
+                                    asset = client.upload_release_asset(current_repo, release['id'], target_ipa, 
+                                                                      name=asset_name, bundle_id=bid_ipa, app_name=name)
                                     if asset:
                                         download_url = asset['browser_download_url']
                                         upload_success = True
-                                        logger.info(f"Successfully uploaded {asset_name} to {current_repo}")
+                                        logger.info(f"Successfully uploaded {asset_name} to {release_tag}")
             
             if not upload_success:
                 # Fallback to nightly.link if upload failed or no token
@@ -641,6 +648,7 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
                     else:
                         logger.error(f"nightly.link returned 404 for both {download_url} and {alt_url}")
 
+
                 r = client.get(download_url, stream=True, timeout=300)
                 if not r:
                     raise Exception(f"Failed to download from {download_url}")
@@ -655,25 +663,21 @@ def process_app(app_config, existing_source, client, apps_list_to_update=None):
                         with open(temp_path, 'wb') as f:
                             f.write(z.read(ipa_in_zip))
                         
-                        # NEW: Also upload this extracted IPA to app-artifacts to provide a direct link
+                        # NEW: Also upload this extracted IPA to artifacts-YYYYMMDD to provide a direct link
                         if current_repo and client.token:
-                            tag_name = "app-artifacts"
-                            release = client.get_release_by_tag(current_repo, tag_name)
+                            release = client.get_release_by_tag(current_repo, release_tag)
                             if not release:
-                                release = client.create_release(current_repo, tag_name, 
-                                                              name="App Artifacts", 
+                                release = client.create_release(current_repo, release_tag, 
+                                                              name=f"App Artifacts ({release_date})", 
                                                               body="This release contains direct download links for apps that are only available as GitHub Artifacts.")
                             
                             if release:
-                                asset_name = f"{repo.replace('/', '_')}_{artifact['name']}"
-                                if asset_name.lower().endswith('.ipa'):
-                                    asset_name = asset_name[:-4]
-                                asset_name += ".ipa"
-                                    
-                                asset = client.upload_release_asset(current_repo, release['id'], temp_path, name=asset_name)
+                                # asset_name and release_tag are already calculated correctly above
+                                asset = client.upload_release_asset(current_repo, release['id'], temp_path, 
+                                                                  name=asset_name, bundle_id=found_bundle_id_auto, app_name=name)
                                 if asset:
                                     download_url = asset['browser_download_url']
-                                    logger.info(f"Successfully moved nightly.link asset to {current_repo} direct link")
+                                    logger.info(f"Successfully moved nightly.link asset to {current_repo} direct link ({release_tag})")
         else:
             # Standard release download
             r = client.get(download_url, stream=True, timeout=300)
@@ -967,6 +971,31 @@ def main():
         generate_combined_apps_md('sources/standard/apps.json', 'sources/nsfw/apps.json', 'APPS.md')
     else:
         logger.info("No changes in sources, skipping APPS.md regeneration.")
+
+    # 3. Artifact Retention Policy: Keep last 7 days of artifacts-YYYYMMDD releases
+    current_repo = client.get_current_repo()
+    if current_repo and client.token:
+        try:
+            logger.info("Running Artifact Retention Policy...")
+            all_releases = client.get_all_releases(current_repo)
+            
+            # 3a. Clean up the old legacy fixed tag if it exists
+            legacy_release = next((r for r in all_releases if r['tag_name'] == 'app-artifacts'), None)
+            if legacy_release:
+                logger.info("Found legacy 'app-artifacts' release, deleting...")
+                client.delete_release(current_repo, legacy_release['id'], 'app-artifacts')
+
+            # 3b. Keep only last 7 days of daily artifacts
+            artifact_releases = [r for r in all_releases if r['tag_name'].startswith('artifacts-')]
+            # Sort by tag name (YYYYMMDD) descending
+            artifact_releases.sort(key=lambda x: x['tag_name'], reverse=True)
+            
+            if len(artifact_releases) > 7:
+                for old_r in artifact_releases[7:]:
+                    logger.info(f"Deleting old artifact release: {old_r['tag_name']}")
+                    client.delete_release(current_repo, old_r['id'], old_r['tag_name'])
+        except Exception as e:
+            logger.warning(f"Failed to run retention policy: {e}")
 
 if __name__ == "__main__":
     main()

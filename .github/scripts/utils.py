@@ -258,24 +258,52 @@ class GitHubClient:
             logger.error(f"Failed to create release {tag}: {e}")
             return None
 
-    def upload_release_asset(self, repo, release_id, file_path, name=None):
-        """Upload a file to a release, replacing if it exists."""
+    def upload_release_asset(self, repo, release_id, file_path, name=None, bundle_id=None, app_name=None):
+        """Upload a file to a release, replacing if it exists (by name or bundle_id/app_name logic)."""
         name = name or os.path.basename(file_path)
         
-        # 1. Check if asset already exists
+        # 1. Check if asset already exists and handle cleanup
         release_url = f"https://api.github.com/repos/{repo}/releases/{release_id}"
         resp = self.get(release_url)
         if resp:
             assets = resp.json().get('assets', [])
             for asset in assets:
+                should_delete = False
+                # Option A: Exact name match
                 if asset['name'] == name:
+                    should_delete = True
+                # Option B: Match by Bundle ID or App Name to clean up old versions/hashes
+                elif bundle_id or app_name:
+                    asset_name_lower = asset['name'].lower()
+                    # Pattern: repo_name_app_name_bundle_id_hash.ipa
+                    # We check if the existing asset belongs to the same app
+                    # Use a stricter check: bundle_id should be surrounded by separators or at ends
+                    if bundle_id:
+                        bid = bundle_id.lower()
+                        # Match: _bid_ or _bid. or .bid. or starts/ends with bid
+                        pattern = rf"(^|[_.]){re.escape(bid)}($|[_.]|(?=\.ipa))"
+                        if re.search(pattern, asset_name_lower):
+                            should_delete = True
+                    
+                    if not should_delete and app_name:
+                        # Normalize names for fuzzy comparison
+                        norm_app = normalize_name(app_name)
+                        norm_asset = normalize_name(asset['name'])
+                        if norm_app == norm_asset or norm_app + "nightly" == norm_asset:
+                            should_delete = True
+                        elif norm_app in norm_asset and asset_name_lower.endswith('.ipa'):
+                            # Final fallback: if normalized app name is a major part of the filename
+                            # and it's an IPA, we consider it a match
+                            should_delete = True
+
+                if should_delete:
                     # Delete existing asset
                     del_url = f"https://api.github.com/repos/{repo}/releases/assets/{asset['id']}"
                     try:
                         self.session.delete(del_url, headers=self.headers, timeout=15).raise_for_status()
-                        logger.info(f"Deleted existing asset {name}")
+                        logger.info(f"Deleted old/conflicting asset {asset['name']}")
                     except Exception as e:
-                        logger.error(f"Failed to delete existing asset {name}: {e}")
+                        logger.error(f"Failed to delete asset {asset['name']}: {e}")
 
         # 2. Upload new asset
         upload_url = f"https://uploads.github.com/repos/{repo}/releases/{release_id}/assets?name={name}"
@@ -290,6 +318,33 @@ class GitHubClient:
         except Exception as e:
             logger.error(f"Failed to upload asset {name}: {e}")
             return None
+
+    def get_all_releases(self, repo):
+        """Fetch all releases for a repository."""
+        url = f"https://api.github.com/repos/{repo}/releases"
+        resp = self.get(url)
+        return resp.json() if resp else []
+
+    def delete_release(self, repo, release_id, tag):
+        """Delete a release and its associated tag."""
+        # 1. Delete release
+        del_rel_url = f"https://api.github.com/repos/{repo}/releases/{release_id}"
+        try:
+            self.session.delete(del_rel_url, headers=self.headers, timeout=15).raise_for_status()
+            logger.info(f"Deleted release {tag} (ID: {release_id})")
+        except Exception as e:
+            logger.error(f"Failed to delete release {tag}: {e}")
+            return False
+
+        # 2. Delete tag
+        del_tag_url = f"https://api.github.com/repos/{repo}/git/refs/tags/{tag}"
+        try:
+            self.session.delete(del_tag_url, headers=self.headers, timeout=15).raise_for_status()
+            logger.info(f"Deleted tag {tag}")
+        except Exception as e:
+            logger.warning(f"Failed to delete tag {tag} (it might have been deleted with the release): {e}")
+        
+        return True
 
 def normalize_name(s):
     """Normalize string for fuzzy comparison: lowercase and remove non-alphanumeric chars and common version suffixes."""
