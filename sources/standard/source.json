@@ -250,32 +250,6 @@
       "sha256": "39b4a4dc05aa8f0628972c239738e90d38edbdfcadf6019cfb8265228162a577"
     },
     {
-      "name": "LiveContainer (Nightly)",
-      "githubRepo": "LiveContainer/LiveContainer",
-      "bundleIdentifier": "com.kdt.livecontainer.nightly",
-      "developerName": "LiveContainer",
-      "version": "3.6.60",
-      "versionDate": "2025-12-21",
-      "versionDescription": "**Commit:** [14c370b986c277e2a871a67712c6015ea32614f1](https://github.com/LiveContainer/LiveContainer/commit/14c370b986c277e2a871a67712c6015ea32614f1)\n**Message:** Fix #1047\n\nThis is a nightly release [created automatically with GitHub Actions workflow](https://github.com/LiveContainer/LiveContainer/actions/runs/20401832822/attempts/1).",
-      "downloadURL": "https://github.com/LiveContainer/LiveContainer/releases/download/nightly/LiveContainer.ipa",
-      "localizedDescription": "Run iOS apps without actually installing them!",
-      "iconURL": "https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon1024.png",
-      "tintColor": "#0050FF",
-      "size": 4387422,
-      "screenshotURLs": [],
-      "versions": [
-        {
-          "version": "3.6.60",
-          "date": "2025-12-21",
-          "localizedDescription": "**Commit:** [14c370b986c277e2a871a67712c6015ea32614f1](https://github.com/LiveContainer/LiveContainer/commit/14c370b986c277e2a871a67712c6015ea32614f1)\n**Message:** Fix #1047\n\nThis is a nightly release [created automatically with GitHub Actions workflow](https://github.com/LiveContainer/LiveContainer/actions/runs/20401832822/attempts/1).",
-          "downloadURL": "https://github.com/LiveContainer/LiveContainer/releases/download/nightly/LiveContainer.ipa",
-          "size": 4387422,
-          "sha256": "8a2d5cb28d4b7e910d6fbe53eb48c38c0dad0e0eb91c75b18a7d26b2794b6afb"
-        }
-      ],
-      "sha256": "8a2d5cb28d4b7e910d6fbe53eb48c38c0dad0e0eb91c75b18a7d26b2794b6afb"
-    },
-    {
       "name": "LiveContainer+SideStore (Nightly)",
       "githubRepo": "LiveContainer/LiveContainer",
       "bundleIdentifier": "com.kdt.livecontainer.nightly.sidestore",
@@ -300,6 +274,32 @@
         }
       ],
       "sha256": "0c70cca7912f50b975e22c2481f74f292adf81f7ccc33b2ab64c11ac067b2cc7"
+    },
+    {
+      "name": "LiveContainer (Nightly)",
+      "githubRepo": "LiveContainer/LiveContainer",
+      "bundleIdentifier": "com.kdt.livecontainer.nightly",
+      "developerName": "LiveContainer",
+      "version": "3.6.60",
+      "versionDate": "2025-12-21",
+      "versionDescription": "**Commit:** [14c370b986c277e2a871a67712c6015ea32614f1](https://github.com/LiveContainer/LiveContainer/commit/14c370b986c277e2a871a67712c6015ea32614f1)\n**Message:** Fix #1047\n\nThis is a nightly release [created automatically with GitHub Actions workflow](https://github.com/LiveContainer/LiveContainer/actions/runs/20401832822/attempts/1).",
+      "downloadURL": "https://github.com/LiveContainer/LiveContainer/releases/download/nightly/LiveContainer.ipa",
+      "localizedDescription": "Run iOS apps without actually installing them!",
+      "iconURL": "https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon1024.png",
+      "tintColor": "#0050FF",
+      "size": 4387422,
+      "screenshotURLs": [],
+      "versions": [
+        {
+          "version": "3.6.60",
+          "date": "2025-12-21",
+          "localizedDescription": "**Commit:** [14c370b986c277e2a871a67712c6015ea32614f1](https://github.com/LiveContainer/LiveContainer/commit/14c370b986c277e2a871a67712c6015ea32614f1)\n**Message:** Fix #1047\n\nThis is a nightly release [created automatically with GitHub Actions workflow](https://github.com/LiveContainer/LiveContainer/actions/runs/20401832822/attempts/1).",
+          "downloadURL": "https://github.com/LiveContainer/LiveContainer/releases/download/nightly/LiveContainer.ipa",
+          "size": 4387422,
+          "sha256": "8a2d5cb28d4b7e910d6fbe53eb48c38c0dad0e0eb91c75b18a7d26b2794b6afb"
+        }
+      ],
+      "sha256": "8a2d5cb28d4b7e910d6fbe53eb48c38c0dad0e0eb91c75b18a7d26b2794b6afb"
     },
     {
       "name": "Mangayomi",
