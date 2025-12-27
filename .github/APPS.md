@@ -1,6 +1,6 @@
 # Supported Apps
 
-> *Last Updated: 2025-12-27 10:11:39 (UTC)*
+> *Last Updated: 2025-12-27 11:09:04 (UTC)*
 
 ## Standard Apps
 
@@ -13,8 +13,8 @@
 | <img src="https://raw.githubusercontent.com/Lakr233/Asspp/refs/heads/main/Asspp/App/Assets.xcassets/AppIcon.appiconset/asspp_tinted.png" width="48" height="48"> | **Asspp** | The App Store for your multi-account eco system. | [Lakr233/Asspp](https://github.com/Lakr233/Asspp) |
 | <img src="https://raw.githubusercontent.com/khcrysalis/Feather/main/Feather/Resources/Assets.xcassets/AppIcon.appiconset/feather.png" width="48" height="48"> | **Feather** | Free on-device iOS/iPadOS application manager/installer, using certificates part of the Apple Developer Program. | [khcrysalis/Feather](https://github.com/khcrysalis/Feather) |
 | <img src="https://raw.githubusercontent.com/Nyasami/Ksign/main/Ksign/Resources/Assets.xcassets/AppIcon.appiconset/Ksign-default.png" width="48" height="48"> | **Ksign** | The "cleaner" Esign app. | [Nyasami/Ksign](https://github.com/Nyasami/Ksign) |
-| <img src="https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon1024.png" width="48" height="48"> | **LiveContainer+SideStore** | Run iOS apps without actually installing them! | [LiveContainer/LiveContainer](https://github.com/LiveContainer/LiveContainer) |
 | <img src="https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon1024.png" width="48" height="48"> | **LiveContainer** | Run iOS apps without actually installing them! | [LiveContainer/LiveContainer](https://github.com/LiveContainer/LiveContainer) |
+| <img src="https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon1024.png" width="48" height="48"> | **LiveContainer+SideStore** | Run iOS apps without actually installing them! | [LiveContainer/LiveContainer](https://github.com/LiveContainer/LiveContainer) |
 | <img src="https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon1024.png" width="48" height="48"> | **LiveContainer (Nightly)** | Run iOS apps without actually installing them! | [LiveContainer/LiveContainer](https://github.com/LiveContainer/LiveContainer) |
 | <img src="https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/Resources/Assets.xcassets/AppIcon.appiconset/AppIcon1024.png" width="48" height="48"> | **LiveContainer+SideStore (Nightly)** | Run iOS apps without actually installing them! | [LiveContainer/LiveContainer](https://github.com/LiveContainer/LiveContainer) |
 | <img src="https://raw.githubusercontent.com/kodjodevf/mangayomi/main/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png" width="48" height="48"> | **Mangayomi** | Free and open source application for reading manga, novels, and watching animes available on Android, iOS, macOS, Linux and Windows | [kodjodevf/mangayomi](https://github.com/kodjodevf/mangayomi) |
@@ -22,8 +22,8 @@
 | <img src="https://raw.githubusercontent.com/bggRGjQaUbCoE/PiliPlus/main/assets/images/logo/logo.png" width="48" height="48"> | **PiliPlus** | PiliPlus | [bggRGjQaUbCoE/PiliPlus](https://github.com/bggRGjQaUbCoE/PiliPlus) |
 | <img src="https://raw.githubusercontent.com/hrydgard/ppsspp/master/ios/assets.xcassets/AppIcon.appiconset/icon_backfill_1024.png" width="48" height="48"> | **PPSSPP** | A PSP emulator for Android, Windows, Mac and Linux, written in C++. Want to contribute? Join us on Discord at https://discord.gg/5NJB6dD or just send pull requests / issues. For discussion use the forums at forums.ppsspp.org. | [hrydgard/ppsspp](https://github.com/hrydgard/ppsspp) |
 | <img src="https://raw.githubusercontent.com/SideStore/SideStore/develop/AltStore/Resources/Icons.xcassets/AppIcon.appiconset/1024.png" width="48" height="48"> | **SideStore** | SideStore is a fork of AltStore that doesn't require an AltServer. | [SideStore/SideStore](https://github.com/SideStore/SideStore) |
-| <img src="https://raw.githubusercontent.com/utmapp/UTM/main/Platform/Assets.xcassets/AppIcon.appiconset/Icon.png" width="48" height="48"> | **UTM HV** | Virtual machines for iOS and macOS | [utmapp/UTM](https://github.com/utmapp/UTM) |
 | <img src="https://raw.githubusercontent.com/utmapp/UTM/main/Platform/Assets.xcassets/AppIcon.appiconset/Icon.png" width="48" height="48"> | **UTM** | Virtual machines for iOS and macOS | [utmapp/UTM](https://github.com/utmapp/UTM) |
+| <img src="https://raw.githubusercontent.com/utmapp/UTM/main/Platform/Assets.xcassets/AppIcon.appiconset/Icon.png" width="48" height="48"> | **UTM HV** | Virtual machines for iOS and macOS | [utmapp/UTM](https://github.com/utmapp/UTM) |
 | <img src="https://raw.githubusercontent.com/venera-app/venera/refs/heads/master/assets/app_icon.png" width="48" height="48"> | **Venera** | A comic app | [venera-app/venera](https://github.com/venera-app/venera) |
 
 ## NSFW Apps
