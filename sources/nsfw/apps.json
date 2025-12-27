@@ -1,0 +1,18 @@
+[
+  {
+    "name": "JHentai",
+    "github_repo": "jiangtian616/JHenTai",
+    "bundle_id": "top.jtmonster.jhentai",
+    "icon_url": "https://raw.githubusercontent.com/jiangtian616/JHenTai/master/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png"
+  },
+  {
+    "name": "LoveIwara",
+    "github_repo": "FoxSensei001/LoveIwara",
+    "icon_url": "https://raw.githubusercontent.com/FoxSensei001/LoveIwara/refs/heads/master/assets/icon/launcher_icon_v2.png"
+  },
+  {
+    "name": "Pica Comic",
+    "github_repo": "Pacalini/PicaComic",
+    "icon_url": "https://raw.githubusercontent.com/Pacalini/PicaComic/master/images/app_icon.png"
+  }
+]

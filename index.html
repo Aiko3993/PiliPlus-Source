@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aiko3993's Sideload Source for iOS</title>
+    <meta name="description" content="Sideload source for iOS (AltStore, SideStore, and LiveContainer)">
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Aiko3993's Sideload Source for iOS">
+    <meta property="og:description" content="Discover and sideload your favorite apps for AltStore, SideStore, and LiveContainer.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/LiveContainer/LiveContainer/main/LiveContainer/Assets.xcassets/AppIcon.appiconset/Icon.png">
+    <meta name="theme-color" content="#2563eb">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.0/github-markdown.min.css">
+    
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="css/flat.css">
+    <style>
+        /* Hit area expansion for the status dot */
+        #status-dot-wrapper::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            bottom: -10px;
+            left: -10px;
+            right: -10px;
+            z-index: 10;
+        }
+        @media (max-width: 768px) {
+            #status-dot-wrapper::after {
+                top: -20px;
+                bottom: -20px;
+                left: -20px;
+                right: -20px;
+            }
+        }
+
+        /* Text Roll Animation - Slower and smoother */
+        @keyframes text-roll {
+            0%, 40% { transform: translateY(0); }
+            50%, 90% { transform: translateY(-16px); }
+            100% { transform: translateY(-32px); }
+        }
+        
+        .animate-text-roll {
+            /* 6s total cycle: 2.4s hold, 0.6s transition */
+            animation: text-roll 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+    </style>
+
+    <script src="js/tailwind-config.js"></script>
+    <script>
+        tailwind.config = window.tailwindConfig;
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 min-h-screen transition-colors duration-300">
+
+    <!-- Toast Notification -->
+    <div id="toast-container" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Debug Log -->
+    <div id="debug-log" class="hidden fixed top-0 left-0 right-0 bg-red-600 text-white text-xs p-2 z-50 font-mono break-all"></div>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 pb-32">
+        
+        <!-- Floating Header -->
+        <header class="relative z-40 mb-8 transition-all duration-300">
+            <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/60 dark:border-gray-800/60 shadow-lg shadow-gray-200/20 dark:shadow-black/20 rounded-3xl p-4 flex flex-col lg:flex-row lg:items-center gap-4 justify-between">
+                
+                <!-- Brand Section -->
+                <div class="flex items-center justify-between w-full lg:w-auto gap-4">
+                    <div class="flex items-center gap-4 min-w-0 flex-1">
+                        <!-- Icon -->
+                        <div class="relative group flex-shrink-0">
+                            <div id="source-icon" class="relative w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-600 text-white shadow-inner flex-shrink-0 overflow-hidden transition-colors duration-500">
+                                <!-- Dynamic Icon Image -->
+                                <img id="dynamic-source-icon" class="w-full h-full object-cover hidden" alt="Source Icon">
+                                
+                                <!-- Standard Icon -->
+                                <svg id="icon-standard" class="w-5 h-5 md:w-6 md:h-6 transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                                </svg>
+                                
+                                <!-- NSFW Icon -->
+                                <svg id="icon-nsfw" class="w-5 h-5 md:w-6 md:h-6 hidden transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+                                </svg>
+
+                                <!-- All Icon -->
+                                <svg id="icon-all" class="w-5 h-5 md:w-6 md:h-6 hidden transition-transform duration-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Title & Meta -->
+                        <div class="flex flex-col min-w-0 flex-1">
+                            <h1 class="text-base md:text-lg font-bold text-gray-900 dark:text-white tracking-tight truncate leading-tight">
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600" data-i18n="title">Aiko3993's</span>
+                                <span data-i18n="sourceTitle">Sideload Source</span>
+                            </h1>
+                            <p class="text-[10px] md:text-xs font-medium text-gray-500 dark:text-gray-400 truncate mt-0.5">iOS • AltStore, SideStore & LiveContainer</p>
+                        </div>
+                    </div>
+
+                    <!-- Copy Button Wrapper (Independent Column) -->
+                    <div id="copy-btn-wrapper" class="flex flex-col items-center justify-center gap-1.5 transition-all duration-300 ease-out flex-shrink-0 min-w-[40px]">
+                        <button onclick="copySourceURL()" class="p-2 rounded-xl text-gray-400 hover:text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-all active:scale-95 shadow-sm border border-transparent hover:border-primary-100 dark:hover:border-primary-800" title="Copy Source URL">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Controls Section -->
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto">
+                    
+                    <!-- Search Bar -->
+                    <div class="relative flex-1 lg:min-w-[200px] group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-gray-400 group-focus-within:text-primary-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </div>
+                        <input type="text" id="search-input" placeholder="Search..." class="block w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700/50 rounded-xl text-sm focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all placeholder-gray-400 focus:bg-white dark:focus:bg-gray-800" autocomplete="off">
+                    </div>
+
+                    <!-- Actions Row -->
+                    <div class="flex items-center justify-between sm:justify-start gap-2 flex-shrink-0">
+                        
+                        <!-- Source Switcher -->
+                        <div class="relative flex-1 sm:flex-none" id="source-container">
+                            <button onclick="toggleSource()" id="source-trigger" class="w-full sm:w-auto flex items-center justify-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 hover:border-primary-500 dark:hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-all active:scale-95 shadow-sm min-w-[120px] group">
+                                <div class="relative h-6 w-28 overflow-hidden text-center">
+                                    <div id="source-label-track" class="flex flex-col items-center transition-transform duration-300 ease-out w-full">
+                                        <div class="h-6 flex-shrink-0 flex items-center justify-center font-medium truncate w-full">
+                                            <svg class="w-4 h-4 mr-1.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                                            <span data-i18n="sourceAll">All Apps</span>
+                                        </div>
+                                        <div class="h-6 flex-shrink-0 flex items-center justify-center font-medium truncate w-full">
+                                            <svg class="w-4 h-4 mr-1.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                            <span data-i18n="sourceStandard">Standard</span>
+                                        </div>
+                                        <div class="h-6 flex-shrink-0 flex items-center justify-center font-medium truncate w-full">
+                                            <svg class="w-4 h-4 mr-1.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>
+                                            <span data-i18n="sourceNSFW">NSFW</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+
+                        <!-- Sort Button -->
+                        <div class="relative flex-1 sm:flex-none" id="sort-container">
+                            <button onclick="cycleSort()" id="sort-trigger" class="w-full sm:w-auto flex items-center justify-center gap-2 px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-semibold text-gray-700 dark:text-gray-300 hover:border-primary-500 dark:hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-all active:scale-95 shadow-sm min-w-[100px]" title="Sort">
+                                <div class="relative h-6 w-24 overflow-hidden text-center">
+                                    <div id="sort-label-track" class="flex flex-col items-center transition-transform duration-300 ease-out w-full">
+                                        <div class="h-6 flex-shrink-0 flex items-center justify-center font-medium truncate w-full">
+                                            <svg class="w-4 h-4 mr-1.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                            <span data-i18n="sortLatest">Latest</span>
+                                        </div>
+                                        <div class="h-6 flex-shrink-0 flex items-center justify-center font-medium truncate w-full">
+                                            <svg class="w-4 h-4 mr-1.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+                                            <span data-i18n="sortName">Name</span>
+                                        </div>
+                                        <div class="h-6 flex-shrink-0 flex items-center justify-center font-medium truncate w-full">
+                                            <svg class="w-4 h-4 mr-1.5 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+                                            <span data-i18n="sortSize">Size</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Apps Grid -->
+        <div id="apps-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-20">
+            <!-- Loading State -->
+            <div class="col-span-full flex flex-col items-center justify-center py-24 text-center animate-pulse">
+                <div class="w-16 h-16 bg-gray-200 dark:bg-gray-800 rounded-2xl mb-4"></div>
+                <div class="h-4 w-48 bg-gray-200 dark:bg-gray-800 rounded mb-2"></div>
+                <div class="h-3 w-32 bg-gray-200 dark:bg-gray-800 rounded"></div>
+            </div>
+        </div>
+
+        <!-- Empty State (Hidden by default) -->
+        <div id="empty-state" class="hidden flex flex-col items-center justify-center py-24 text-center">
+            <div class="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100" data-i18n="noApps">No apps found</h3>
+            <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" data-i18n="noAppsDesc">Try adjusting your search or switching sources.</p>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="fixed bottom-6 left-1/2 -translate-x-1/2 z-30 animate-fade-in w-auto max-w-[90%]">
+        <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200/30 dark:border-gray-700/30 rounded-full shadow-lg px-4 py-2 flex flex-row items-center gap-3 transition-transform duration-300 hover:bg-white dark:hover:bg-gray-900 hover:shadow-xl hover:scale-105">
+            
+            <!-- Maintainer -->
+            <div class="flex items-center gap-1.5 whitespace-nowrap">
+                <span id="status-dot-wrapper" class="relative flex h-1.5 w-1.5 cursor-pointer select-none group items-center justify-center" onclick="handleEasterEgg()" style="touch-action: manipulation;">
+                  <span id="status-dot-ping" class="animate-ping absolute inline-flex h-1.5 w-1.5 rounded-full bg-green-400 group-hover:bg-yellow-400 opacity-75 transition-colors duration-300"></span>
+                  <span id="status-dot-core" class="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500 group-hover:bg-yellow-500 transition-all duration-300"></span>
+                </span>
+                <span class="text-xs font-medium text-gray-600 dark:text-gray-300">
+                    By <a id="maintainer-link" href="https://github.com/Aiko3993" target="_blank" class="font-bold text-primary-600 dark:text-primary-400 hover:underline transition-colors">Aiko3993</a>
+                </span>
+            </div>
+            
+            <!-- Divider -->
+            <div class="h-3 w-px bg-gray-300 dark:bg-gray-600"></div>
+
+            <!-- Risk Warning (Rolling) -->
+            <div class="flex items-center gap-1 text-[10px] text-gray-400 dark:text-gray-500 font-medium whitespace-nowrap overflow-hidden h-4">
+                <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                <div class="flex flex-col animate-text-roll">
+                     <span data-i18n="thirdParty" class="h-4 flex items-center">Third-party Source</span>
+                     <span data-i18n="riskOwnRisk" class="h-4 flex items-center">Use at your own risk</span>
+                     <!-- Duplicate first item for seamless loop if needed, but CSS keyframes handle it -->
+                     <span data-i18n="thirdParty" class="h-4 flex items-center">Third-party Source</span>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+            class="fixed bottom-20 right-6 p-3 rounded-full bg-primary-600 dark:bg-primary-500 text-white shadow-lg shadow-primary-600/30 hover:shadow-primary-600/50 hover:-translate-y-1 transition-all duration-300 opacity-0 pointer-events-none z-40 transform translate-y-4">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+    </button>
+
+    <!-- Details Modal -->
+    <div id="modal-backdrop" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300" onclick="closeModal()"></div>
+    <div id="modal-panel" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden pointer-events-none">
+        <div class="bg-white dark:bg-gray-900 w-full max-w-2xl max-h-[85vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col pointer-events-auto transform scale-95 opacity-0 transition duration-300" onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl z-10">
+                <div class="flex items-center gap-4">
+                    <img id="modal-icon" src="" class="w-14 h-14 rounded-xl bg-gray-100 dark:bg-gray-800 object-cover shadow-sm">
+                    <div class="flex-1 min-w-0">
+                        <h3 id="modal-title" class="text-xl font-bold text-gray-900 dark:text-gray-100 leading-tight truncate"></h3>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="modal-version-badge" class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400"></span>
+                            <span id="modal-size" class="text-xs text-gray-500 dark:text-gray-400"></span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <!-- Modal Content -->
+            <div class="flex-grow overflow-y-auto p-0 custom-scrollbar bg-white dark:bg-gray-900">
+                <!-- Metadata Grid -->
+                <div id="modal-meta-grid" class="grid grid-cols-2 gap-3 p-5 border-b border-gray-100 dark:border-gray-800">
+                    <!-- Injected by JS -->
+                </div>
+
+                <div class="p-6">
+                     <div id="modal-content" class="markdown-body text-sm bg-transparent">
+                        <!-- Markdown content will be injected here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div id="modal-footer" class="p-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-xl flex items-center gap-3">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Logic -->
+    <script type="module" src="js/modules/main.js"></script>
+</body>
+</html>

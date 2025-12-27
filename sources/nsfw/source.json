@@ -1,0 +1,89 @@
+{
+  "name": "Aiko3993's Sideload Source (NSFW)",
+  "identifier": "io.github.aiko3993.source.nsfw",
+  "subtitle": "Supports AltStore, SideStore & LiveContainer",
+  "description": "A collection of adult-themed sideloadable apps for iOS and iPadOS. Supports AltStore, SideStore, and LiveContainer.",
+  "iconURL": "https://raw.githubusercontent.com/Aiko3993/iOS-Sideload-Source/main/sources/nsfw/icon/nsfw.png",
+  "website": "https://aiko3993.github.io/iOS-Sideload-Source",
+  "tintColor": "#db2777",
+  "apps": [
+    {
+      "name": "JHentai",
+      "githubRepo": "jiangtian616/JHenTai",
+      "bundleIdentifier": "top.jtmonster.jhentai",
+      "developerName": "jiangtian616",
+      "version": "8.0.10+302",
+      "versionDate": "2025-10-11",
+      "versionDescription": "- 修复空文件名图片会导致保存图片失败的bug\n\n--------------------\n\n- Fix the bug that saving images fails when the filename is empty.",
+      "downloadURL": "https://github.com/jiangtian616/JHenTai/releases/download/v8.0.10%2B302/JHenTai_8.0.10%2B302.ipa",
+      "localizedDescription": "A cross-platform manga app made for e-hentai & exhentai by Flutter",
+      "iconURL": "https://raw.githubusercontent.com/jiangtian616/JHenTai/master/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png",
+      "tintColor": "#E6E623",
+      "size": 15698779,
+      "permissions": {},
+      "screenshotURLs": [],
+      "versions": [
+        {
+          "version": "8.0.10+302",
+          "date": "2025-10-11",
+          "localizedDescription": "- 修复空文件名图片会导致保存图片失败的bug\n\n--------------------\n\n- Fix the bug that saving images fails when the filename is empty.",
+          "downloadURL": "https://github.com/jiangtian616/JHenTai/releases/download/v8.0.10%2B302/JHenTai_8.0.10%2B302.ipa",
+          "size": 15698779,
+          "sha256": "7d92624f76c76272f276545b2971d8274e7d9d685190e418673026ec27d829aa"
+        }
+      ],
+      "sha256": "7d92624f76c76272f276545b2971d8274e7d9d685190e418673026ec27d829aa"
+    },
+    {
+      "name": "LoveIwara",
+      "bundleIdentifier": "m.c.g.a.i_iwara",
+      "developerName": "FoxSensei001",
+      "version": "0.4.1",
+      "versionDate": "2025-12-15",
+      "versionDescription": "🚀 Release Notes for Version 0.4.1\n\n\n🔥 New Features\n\n Smarter Edge Gesture Handling: Optimized the player's edge swipe behavior to better distinguish between system gestures (status bar pull-down, full-screen back gesture, etc.) and in-app horizontal/vertical gestures, reducing accidental operations in the player (Issue 69).\n Download List Enhancements:\n   Local Playback Entry: Videos in the download list can now be opened directly as local files within the app.\n   UI Polish: Refined the layout and interaction of the download list to make status and actions clearer.\n Desktop Drag-and-Drop Playback: On desktop platforms, you can drag video files from a folder onto the app icon or directly into the app window to start playback immediately.  \n  _Note: Linux is currently untested and this feature is not guaranteed to be available or work correctly._\n System “Open with → i_iwara” Support: On both desktop and mobile platforms, you can use the system's “Open with → i_iwara” action to launch the app and play local video files.  \n  _Note: iOS and Linux are currently untested and this feature is not guaranteed to be available or work correctly._\n Windows Installer: Windows builds now provide an installer (installer), so you no longer need to manually extract zip packages and replace folders.\n Local Favorites Drag-and-Drop Sorting: The local favorites list now supports drag-and-drop sorting, making it easier to organize your favorite content.\n\n\n🛠 Optimizations\n\n Gallery Viewing Experience:\n   When viewing large images, the viewer now preloads 3 images in advance to provide smoother browsing for posts with many pictures.\n   When the current item is a video file in the large-image viewer, the volume swipe-to-change-page gesture is disabled so that you can adjust the volume normally without interference.\n Stability Improvements:\n   Rolled back the Flutter version to improve app stability on some systems.\n\n\n📢 How to Provide Feedback\n\n Leave a comment in the GitHub issues section\n Or join the discussion group\n\nYour feedback is extremely valuable to us. Thank you for your continued support and help! 🚀\n\n\n---\n\n🚀 0.4.1 版本发布说明\n\n\n🔥 新功能\n\n 更智能的边缘滑动处理：优化播放器的边缘滑动逻辑，更好地区分系统手势（如下拉状态栏、全面屏返回手势等）与应用内横向/竖向滑动事件，减少误触播放器操作的情况（Issue 69）。\n 下载列表增强：\n   本地播放入口：下载列表中的视频现已支持直接作为本地资源在应用内打开播放。\n   UI 优化：优化下载列表的布局与交互，使状态展示与操作入口更加清晰。\n 桌面端拖拽播放：桌面端支持将文件夹中的视频文件拖拽到应用图标或应用窗口内，以直接开始播放。  \n  _说明：Linux 系统尚未经过测试，不保证一定存在或正常支持该功能。_\n 系统“打开方式 → i_iwara” 支持：桌面端与移动端均支持通过系统的 “打开方式 → i_iwara” 调用应用，直接播放本地视频文件。  \n  _说明：iOS、Linux 系统尚未经过测试，不保证一定存在或正常支持该功能。_\n Windows 安装器：Windows 打包构建产物新增安装器（installer），无需手动解压 zip 再替换文件夹。\n 本地收藏拖拽排序：本地收藏列表支持通过拖拽进行排序，便于你根据个人习惯整理常用内容。\n\n\n🛠 优化改进\n\n 图库浏览体验：\n   在大图浏览时会预先加载 3 张图片，在多图内容下滚动与切换更顺滑。\n   若大图浏览当前内容为 视频文件，将自动关闭“通过音量滑动翻页”的功能，保证可以正常调节音量而不影响浏览。\n 稳定性提升：\n   回滚 Flutter 版本，以提升应用在部分系统上的稳定性。\n\n\n📢 反馈方式\n\n 在 GitHub issues 区留言\n 加入用户讨论群\n\n你的每一条反馈都对我们非常重要，感谢一直以来的支持与帮助！🚀",
+      "downloadURL": "https://github.com/FoxSensei001/LoveIwara/releases/download/0.4.1/i_iwara-0.4.1-ios.ipa",
+      "localizedDescription": "Love Iwara (i-iwara or 2i). An unofficial iwara flutter app - Supporting multiple platforms and devices including mobile phones, tablets and computers. Compatible with Android, Windows and other systems. 第三方的Iwara应用 - 支持多个平台和设备，包括手机、平板和计算机。兼容 安卓、IOS、Windows、MacOS等系统。",
+      "iconURL": "https://raw.githubusercontent.com/FoxSensei001/LoveIwara/refs/heads/master/assets/icon/launcher_icon_v2.png",
+      "tintColor": "#F89032",
+      "size": 21206047,
+      "versions": [
+        {
+          "version": "0.4.1",
+          "date": "2025-12-15",
+          "localizedDescription": "🚀 Release Notes for Version 0.4.1\n\n\n🔥 New Features\n\n Smarter Edge Gesture Handling: Optimized the player's edge swipe behavior to better distinguish between system gestures (status bar pull-down, full-screen back gesture, etc.) and in-app horizontal/vertical gestures, reducing accidental operations in the player (Issue 69).\n Download List Enhancements:\n   Local Playback Entry: Videos in the download list can now be opened directly as local files within the app.\n   UI Polish: Refined the layout and interaction of the download list to make status and actions clearer.\n Desktop Drag-and-Drop Playback: On desktop platforms, you can drag video files from a folder onto the app icon or directly into the app window to start playback immediately.  \n  _Note: Linux is currently untested and this feature is not guaranteed to be available or work correctly._\n System “Open with → i_iwara” Support: On both desktop and mobile platforms, you can use the system's “Open with → i_iwara” action to launch the app and play local video files.  \n  _Note: iOS and Linux are currently untested and this feature is not guaranteed to be available or work correctly._\n Windows Installer: Windows builds now provide an installer (installer), so you no longer need to manually extract zip packages and replace folders.\n Local Favorites Drag-and-Drop Sorting: The local favorites list now supports drag-and-drop sorting, making it easier to organize your favorite content.\n\n\n🛠 Optimizations\n\n Gallery Viewing Experience:\n   When viewing large images, the viewer now preloads 3 images in advance to provide smoother browsing for posts with many pictures.\n   When the current item is a video file in the large-image viewer, the volume swipe-to-change-page gesture is disabled so that you can adjust the volume normally without interference.\n Stability Improvements:\n   Rolled back the Flutter version to improve app stability on some systems.\n\n\n📢 How to Provide Feedback\n\n Leave a comment in the GitHub issues section\n Or join the discussion group\n\nYour feedback is extremely valuable to us. Thank you for your continued support and help! 🚀\n\n\n---\n\n🚀 0.4.1 版本发布说明\n\n\n🔥 新功能\n\n 更智能的边缘滑动处理：优化播放器的边缘滑动逻辑，更好地区分系统手势（如下拉状态栏、全面屏返回手势等）与应用内横向/竖向滑动事件，减少误触播放器操作的情况（Issue 69）。\n 下载列表增强：\n   本地播放入口：下载列表中的视频现已支持直接作为本地资源在应用内打开播放。\n   UI 优化：优化下载列表的布局与交互，使状态展示与操作入口更加清晰。\n 桌面端拖拽播放：桌面端支持将文件夹中的视频文件拖拽到应用图标或应用窗口内，以直接开始播放。  \n  _说明：Linux 系统尚未经过测试，不保证一定存在或正常支持该功能。_\n 系统“打开方式 → i_iwara” 支持：桌面端与移动端均支持通过系统的 “打开方式 → i_iwara” 调用应用，直接播放本地视频文件。  \n  _说明：iOS、Linux 系统尚未经过测试，不保证一定存在或正常支持该功能。_\n Windows 安装器：Windows 打包构建产物新增安装器（installer），无需手动解压 zip 再替换文件夹。\n 本地收藏拖拽排序：本地收藏列表支持通过拖拽进行排序，便于你根据个人习惯整理常用内容。\n\n\n🛠 优化改进\n\n 图库浏览体验：\n   在大图浏览时会预先加载 3 张图片，在多图内容下滚动与切换更顺滑。\n   若大图浏览当前内容为 视频文件，将自动关闭“通过音量滑动翻页”的功能，保证可以正常调节音量而不影响浏览。\n 稳定性提升：\n   回滚 Flutter 版本，以提升应用在部分系统上的稳定性。\n\n\n📢 反馈方式\n\n 在 GitHub issues 区留言\n 加入用户讨论群\n\n你的每一条反馈都对我们非常重要，感谢一直以来的支持与帮助！🚀",
+          "downloadURL": "https://github.com/FoxSensei001/LoveIwara/releases/download/0.4.1/i_iwara-0.4.1-ios.ipa",
+          "size": 21206047,
+          "sha256": "c858f99a46a76f1791ed3e71bf8c30f6b0cbd86b07d087576a7735bfc47c8cab"
+        }
+      ],
+      "githubRepo": "FoxSensei001/LoveIwara",
+      "sha256": "c858f99a46a76f1791ed3e71bf8c30f6b0cbd86b07d087576a7735bfc47c8cab"
+    },
+    {
+      "name": "Pica Comic",
+      "bundleIdentifier": "com.github.pacalini.picaComic.comic.pica",
+      "developerName": "Pacalini",
+      "version": "4.2.9",
+      "versionDate": "2025-11-06",
+      "versionDescription": "4.2.9 (2025-11-06)\n\n更新说明\n 修复 jm 详情页 作品、人物 tag 151\n 修复 nhentai 某些关键词搜索下的页数错误 150\n htcomic 新增排名页面 139\n 搜索无结果时新增提示 77\n\n安装&更新\n (Android) 安装时不会覆盖 4.0.4 及之前的版本。用户数据通用，请在设置中手动迁移。\n IOS、MacOS 版本未经任何测试，不受任何支持.\n\nFull Changelog: https://github.com/Pacalini/PicaComic/compare/v4.2.7...v4.2.9",
+      "downloadURL": "https://github.com/Pacalini/PicaComic/releases/download/v4.2.9/PicaComic-4.2.9-app-ios.ipa",
+      "localizedDescription": "A comic app built with Flutter, supporting multiple comic sources.",
+      "iconURL": "https://raw.githubusercontent.com/Pacalini/PicaComic/master/images/app_icon.png",
+      "tintColor": "#FCE4E4",
+      "size": 13388036,
+      "versions": [
+        {
+          "version": "4.2.9",
+          "date": "2025-11-06",
+          "localizedDescription": "4.2.9 (2025-11-06)\n\n更新说明\n 修复 jm 详情页 作品、人物 tag 151\n 修复 nhentai 某些关键词搜索下的页数错误 150\n htcomic 新增排名页面 139\n 搜索无结果时新增提示 77\n\n安装&更新\n (Android) 安装时不会覆盖 4.0.4 及之前的版本。用户数据通用，请在设置中手动迁移。\n IOS、MacOS 版本未经任何测试，不受任何支持.\n\nFull Changelog: https://github.com/Pacalini/PicaComic/compare/v4.2.7...v4.2.9",
+          "downloadURL": "https://github.com/Pacalini/PicaComic/releases/download/v4.2.9/PicaComic-4.2.9-app-ios.ipa",
+          "size": 13388036,
+          "sha256": "cbc10f0827cb756ab4c1af9a9c78761f374015dde2425f76ee7b8fb4b18a27c1"
+        }
+      ],
+      "githubRepo": "Pacalini/PicaComic",
+      "sha256": "cbc10f0827cb756ab4c1af9a9c78761f374015dde2425f76ee7b8fb4b18a27c1"
+    }
+  ],
+  "news": []
+}

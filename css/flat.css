@@ -1,0 +1,243 @@
+body {
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Theme Variables */
+:root {
+    /* Default (Standard) - Emerald Green */
+    --primary-50: 236 253 245;
+    --primary-100: 209 250 229;
+    --primary-200: 167 243 208;
+    --primary-300: 110 231 183;
+    --primary-400: 52 211 153;
+    --primary-500: 16 185 129;
+    --primary-600: 5 150 105;
+    --primary-700: 4 120 87;
+    --primary-800: 6 95 70;
+    --primary-900: 6 78 59;
+
+    /* Secondary (for Standard) */
+    --secondary-400: 94 234 212;
+    --secondary-500: 45 212 191;
+    --secondary-600: 20 184 166;
+    
+    --glow-opacity: 0.2; /* Light mode default glow opacity */
+    --icon-glow-opacity: 0.15;
+    --color-canvas-default: transparent;
+    --color-canvas-subtle: transparent;
+    --color-border-default: #e5e7eb;
+    --color-border-muted: #f3f4f6;
+}
+
+[data-theme="all"] {
+    /* All Apps - Royal Blue */
+    --primary-50: 239 246 255;
+    --primary-100: 219 234 254;
+    --primary-200: 191 219 254;
+    --primary-300: 147 197 253;
+    --primary-400: 96 165 250;
+    --primary-500: 59 130 246;
+    --primary-600: 37 99 235;
+    --primary-700: 29 78 216;
+    --primary-800: 30 64 175;
+    --primary-900: 30 58 138;
+
+    --secondary-400: 129 140 248;
+    --secondary-500: 99 102 241;
+    --secondary-600: 79 70 229;
+}
+
+[data-theme="nsfw"] {
+    /* NSFW Pink */
+    --primary-50: 253 242 248;
+    --primary-100: 252 231 243;
+    --primary-200: 251 207 232;
+    --primary-300: 249 168 212;
+    --primary-400: 244 114 182;
+    --primary-500: 236 72 153;
+    --primary-600: 219 39 119;
+    --primary-700: 190 24 93;
+    --primary-800: 157 23 77;
+    --primary-900: 131 24 67;
+
+    /* NSFW Rose */
+    --secondary-400: 251 113 133;
+    --secondary-500: 244 63 94;
+    --secondary-600: 225 29 72;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 20px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(107, 114, 128, 0.8);
+}
+@media (prefers-color-scheme: dark) {
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background-color: rgba(75, 85, 99, 0.5);
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(107, 114, 128, 0.8);
+    }
+}
+
+/* Dark Mode & Glow Variables */
+:root {
+    --glow-opacity: 0.2; /* Light mode default glow opacity */
+    --icon-glow-opacity: 0.15;
+    --color-canvas-default: transparent;
+    --color-canvas-subtle: transparent;
+    --color-border-default: #e5e7eb;
+    --color-border-muted: #f3f4f6;
+}
+@media (prefers-color-scheme: dark) {
+    :root {
+        --glow-opacity: 0.15; /* Dark mode reduced glow opacity */
+        --icon-glow-opacity: 0.1;
+        --color-canvas-default: transparent;
+        --color-canvas-subtle: transparent;
+        --color-border-default: #3f3f46;
+        --color-border-muted: #27272a;
+    }
+}
+
+/* Markdown Dark Mode Overrides */
+@media (prefers-color-scheme: dark) {
+    .markdown-body {
+        color-scheme: dark;
+        --color-prettylights-syntax-comment: #8b949e;
+        --color-prettylights-syntax-constant: #79c0ff;
+        --color-prettylights-syntax-entity: #d2a8ff;
+        --color-prettylights-syntax-storage-modifier-import: #c9d1d9;
+        --color-prettylights-syntax-entity-tag: #7ee787;
+        --color-prettylights-syntax-keyword: #ff7b72;
+        --color-prettylights-syntax-string: #a5d6ff;
+        --color-prettylights-syntax-variable: #ffa657;
+        --color-prettylights-syntax-brackethighlighter-unmatched: #f0f6fc;
+        --color-prettylights-syntax-invalid-illegal-text: #f0f6fc;
+        --color-prettylights-syntax-invalid-illegal-bg: #8b949e;
+        --color-prettylights-syntax-carriage-return-text: #f0f6fc;
+        --color-prettylights-syntax-carriage-return-bg: #b62324;
+        --color-prettylights-syntax-string-regexp: #7ee787;
+        --color-prettylights-syntax-markup-list: #f2cc60;
+        --color-prettylights-syntax-markup-heading: #1f6feb;
+        --color-prettylights-syntax-markup-italic: #c9d1d9;
+        --color-prettylights-syntax-markup-bold: #c9d1d9;
+        --color-prettylights-syntax-markup-deleted-text: #ffdcd7;
+        --color-prettylights-syntax-markup-deleted-bg: #67060c;
+        --color-prettylights-syntax-markup-inserted-text: #aff5b4;
+        --color-prettylights-syntax-markup-inserted-bg: #033a16;
+        --color-prettylights-syntax-markup-changed-text: #ffdf5d;
+        --color-prettylights-syntax-markup-changed-bg: #5a1e02;
+        --color-prettylights-syntax-markup-ignored-text: #c9d1d9;
+        --color-prettylights-syntax-markup-ignored-bg: #1158c7;
+        --color-prettylights-syntax-meta-diff-range: #d2a8ff;
+        --color-prettylights-syntax-brackethighlighter-angle: #8b949e;
+        --color-prettylights-syntax-sublimelinter-gutter-mark: #484f58;
+        --color-prettylights-syntax-constant-other-reference-link: #a5d6ff;
+        --color-fg-default: #c9d1d9;
+        --color-fg-muted: #8b949e;
+        --color-fg-subtle: #484f58;
+        --color-canvas-default: transparent;
+        --color-canvas-subtle: #161b22;
+        --color-border-default: #30363d;
+        --color-border-muted: #21262d;
+        --color-neutral-muted: rgba(110,118,129,0.4);
+        --color-accent-fg: #58a6ff;
+        --color-accent-emphasis: #1f6feb;
+        --color-attention-subtle: rgba(187,128,9,0.15);
+        --color-attention-fg: #d29922;
+    }
+}
+/* Badge Dynamic Text & Background Color */
+.badge-dynamic-text {
+    color: rgb(var(--badge-text-light));
+    background-color: rgba(var(--badge-text-light), 0.12);
+    border-color: rgba(var(--badge-text-light), 0.3);
+}
+@media (prefers-color-scheme: dark) {
+    .badge-dynamic-text {
+        color: rgb(var(--badge-text-dark));
+        background-color: rgba(var(--badge-text-dark), 0.15);
+        border-color: rgba(var(--badge-text-dark), 0.3);
+    }
+}
+/* Dynamic Modal Glow Class */
+.dynamic-modal-glow {
+    --current-modal-glow: var(--modal-glow-light);
+    --current-modal-text: var(--modal-tint-light);
+    --current-modal-btn-text: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+    .dynamic-modal-glow {
+        --current-modal-glow: var(--modal-glow-dark);
+        --current-modal-text: var(--modal-tint-dark);
+        --current-modal-btn-text: #000000;
+    }
+}
+
+.modal-action-btn-text {
+    color: var(--current-modal-btn-text) !important;
+}
+.dynamic-app-glow {
+    --current-glow: var(--app-glow-light);
+    --current-text: var(--app-tint-light);
+}
+@media (prefers-color-scheme: dark) {
+    .dynamic-app-glow {
+        --current-glow: var(--app-glow-dark);
+        --current-text: var(--app-tint-dark);
+    }
+}
+
+/* Apply the dynamic variable */
+.group-hover\:glow-active:hover .glow-target {
+     opacity: 1;
+     box-shadow: 0 0 40px rgba(var(--current-glow), var(--glow-opacity));
+}
+
+@keyframes split-up {
+    0% { transform: translateY(50%) scale(0.5); opacity: 0; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+@keyframes split-down {
+    0% { transform: translateY(-50%) scale(0.5); opacity: 0; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Easter Egg Animations */
+@keyframes fall-down {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+@keyframes shake-hard {
+    0%, 100% { transform: translate(0, 0) scale(1.5); }
+    25% { transform: translate(-2px, 2px) scale(1.6); }
+    50% { transform: translate(2px, -2px) scale(1.6); }
+    75% { transform: translate(-2px, -2px) scale(1.6); }
+}
+
+/* Atomic Theme Switching - Prevents layout glitches */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+    transition: none !important;
+}
+
+/* Also disable backdrop filter during switch to prevent color blocks */
+html.theme-switching .glass-panel,
+html.theme-switching .clear-panel,
+html.theme-switching .clear-btn {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
